@@ -43,6 +43,10 @@ When a chat query involves a matching file, the instructions are auto-included.
 
 ### Effect on the prompt
 
+**Scope of application:** Instruction files apply either to the entire workspace
+ (for `.github/copilot-instructions.md`), to a subset of files matched by
+ `applyTo`, or to an individual chat request when attached manually.
+
 When attached, the file’s contents are injected verbatim into Copilot’s prompt
 context (system or user message). This steers output toward project-specific
 rules such as coding style, architectural constraints, or terminology,
@@ -77,6 +81,10 @@ is treated as the prompt body and sent to Copilot. For example,
 a release-notes generator might declare `mode: agent` and list file
 or search tools, turning the prompt into a reusable, one‑command automation.
 
+**Scope of application:** Prompt files apply at the level of a single explicit
+invocation (slash command, command palette action, or direct execution)
+and affect only that specific request.
+
 Effect on Copilot: When you run a prompt file, Copilot Chat will treat its
 content as if you asked that multi-line question or issued those instructions.
 If mode: agent is set, Copilot will autonomously use the specified tools to
@@ -92,6 +100,11 @@ to provide shared context or instructions when you are working with multiple
 AI agents in VS Code. Think of it as a README for AI agents in your project.
 
 Purpose: The `AGENTS.md` file is automatically included as additional context
+
+**Scope of application:** `AGENTS.md` applies implicitly to all chat queries
+within its workspace or folder scope, without requiring explicit attachment
+or invocation.
+
 for Copilot (and other agents) in your workspace. It’s useful especially for
 teams or scenarios using more than one AI agent (e.g. Copilot plus custom
 agents) to coordinate their behavior or give them project-wide guidance.
@@ -120,9 +133,7 @@ Content: The `AGENTS.md` format is open-ended (an emerging standard in the
 AI community). You can write any information or directives here that you want
 the AI to be aware of for the whole project. For instance, you might describe
 project architecture, coding standards, or instruct the AI on how multiple
-agents should collaborate. Whenever you start a new chat or agent task,
-Copilot will include the text from `AGENTS.md` in the prompt it sends
-to the model, which helps align the AI’s output with your project’s context.
+agents should collaborate.
 
 ## SKILL.md (agent skills)
 
@@ -186,6 +197,10 @@ so Copilot knows to load it).
 test-template.js – a file the skill can use as a template for generating tests.
 
 perhaps an examples/ subfolder with sample tests or data.
+
+**Scope of application:** Skills apply conditionally, at query time,
+and are fully injected only when the agent determines that a given skill
+is relevant to the current request.
 
 Effect on Copilot: Skills extend Copilot’s knowledge or toolset in
 a context-specific way. When active, they let Copilot perform specialized
