@@ -1,15 +1,15 @@
 # AI context configuration files
 
-Overview of VS Code’s AI Customization Files (2025 Updates)
+Overview of VS Code’s AI Customization Files
 
-Over the past year, Visual Studio Code introduced several features that let you
-tune the behavior of its built-in GitHub Copilot AI using configuration files
-in your projects. These include custom instruction files, prompt files,
-multi-agent instruction files (`AGENTS.md`), agent “skills” (`SKILL.md`), and
-Model Context Protocol config (mcp.json).
+Visual Studio Code provides a growing set of file‑based mechanisms that allow
+you to tune the behavior of its built‑in GitHub Copilot AI using configuration
+files in your projects. These include custom instruction files, prompt files,
+multi‑agent instruction files (`AGENTS.md`), agent “skills” (`SKILL.md`),
+and Model Context Protocol configuration (`mcp.json`).
 Below we detail each feature, the purpose of its files, what to put in them,
-how they influence Copilot’s context/behavior, where to place them,
-and relevant settings for enabling these features.
+how they influence Copilot’s context and behavior, where to place them, and
+the relevant settings for enabling them.
 
 ## *.instructions.md (custom instruction files)
 
@@ -87,7 +87,7 @@ the AI to execute.
 
 ## AGENTS.md (multi-agent instructions file)
 
-`AGENTS.md` is a special markdown file introduced in August 2025 (v1.104)
+`AGENTS.md` is a special markdown file introduced
 to provide shared context or instructions when you are working with multiple
 AI agents in VS Code. Think of it as a README for AI agents in your project.
 
@@ -100,7 +100,7 @@ description of each agent’s role.
 
 Location: Place `AGENTS.md` at the root of your workspace repository.
 In a multi-root workspace, you can have one in each root. By default,
-VS Code will detect this file and include it. Starting with v1.104,
+VS Code will detect this file and include it. introduced,
 support for `AGENTS.md` is enabled by default (controlled by the
 `chat.useAgentsMdFile` setting). When enabled, VS Code looks for an
 `AGENTS.md` in the workspace root(s) and automatically uses it
@@ -126,8 +126,7 @@ to the model, which helps align the AI’s output with your project’s context.
 
 ## SKILL.md (agent skills)
 
-Agent Skills were introduced as an experimental feature in
-December 2025 (v1.108) to “teach” the AI new capabilities or domain
+Agent Skills introduced to “teach” the AI new capabilities or domain
 knowledge by providing skill packages. A Skill is essentially a bundle
 of instructions and resources that the Copilot coding agent can load
 on demand when a certain topic comes up.
@@ -259,7 +258,7 @@ can authorize them easily without manually editing tokens.
 
 Dev Mode for MCP Servers: If you are developing or debugging a custom
 MCP server, you can enable “development mode” for it by adding a "dev"
- section in its config. This was introduced in v1.101.
+ section in its config. introduced.
  The dev object supports:
 
 "watch" – a glob of files to watch. If those files change,
