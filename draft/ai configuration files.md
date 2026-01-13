@@ -11,64 +11,47 @@ Below we detail each feature, the purpose of its files, what to put in them,
 how they influence Copilot’s context/behavior, where to place them,
 and relevant settings for enabling these features.
 
-## Custom Instructions Files (instructions.md)
+## *.instructions.md (custom instruction files)
 
-Custom instructions allow you to provide general guidelines or rules to tailor
-Copilot’s responses for your needs. Initially, VS Code supported a single
-workspace-specific instructions file, and later expanded to multiple
-reusable instruction files:
+Instruction files provide reusable, file-backed guidance that is injected into
+Copilot’s prompt context. They are not standalone prompts, but
+*policy layers* that shape how Copilot responds.
 
-Workspace Instructions (`copilot-instructions.md`): Starting in
-VS Code February 2025 (v1.98), you can add a markdown file
-`.github/copilot-instructions.md` in your repository to supply custom
-instructions (for example, coding style rules or project conventions).
-When the setting github.copilot.chat.codeGeneration.useInstructionFiles
-is enabled, Copilot will incorporate this file’s content into its responses.
-This feature reached general availability in v1.98, so make sure the setting
-is on and the file is present for Copilot to use it.
+### What they are
 
-Reusable Instructions Files (`.instructions.md`): In April 2025 (v1.100),
-VS Code introduced a more flexible system for instructions files.
-Any file with the suffix .instructions.md can act as an instruction file.
-These can reside in your workspace (e.g. a dedicated folder like
-`.github/instructions/`) or in your global user data folder.
-VS Code maintains a list of folders to scan via the
-`chat.instructionsFilesLocations` setting.
+Any `*.instructions.md` file contains free-form guidance (style rules,
+conventions, constraints) that Copilot should follow when answering.
+A special case is the workspace-wide `.github/copilot-instructions.md`,
+which acts as a default instruction set for the repository.
 
-Usage: Instructions files are not standalone chat prompts, but additional
-context that can be attached to chat queries. You can attach an instructions
-file manually (for a given chat question) via the chat UI
-(“Add Context > Instructions…”) or using the Chat: Attach Instructions… command.
-You can also configure them to attach automatically based on context:
-include a YAML frontmatter in the file with an applyTo pattern (glob)
-indicating which files or scenarios it applies to.
+### How they are applied
 
-If your chat query involves a file matching that pattern, VS Code will
-auto-attach the instructions file as context. For example,
-an instructions file might start with:
+Instruction files can be attached in two ways:
 
-```plaintext
+- **Automatically**, via YAML frontmatter:
+
+```yaml
 ---
 applyTo: '**/*.ts'
 ---
-
-Free form guidelines
 ```
 
-The above would be auto-included whenever Copilot is asked about a .ts file.
-Instructions files can be created easily via the “Chat: New Instructions File…”
-command, and VS Code even syncs user-level instruction files across machines
-if Settings Sync is enabled (ensure “Prompts and Instructions” is checked
-in sync settings).
+When a chat query involves a matching file, the instructions are auto-included.
 
-Effect on Copilot: These instruction files’ content is injected into Copilot’s
-prompt context (as a system or user message) whenever they are attached.
-This steers the AI’s answers to follow your rules or preferences. For example,
+- **Manually**, by attaching an instructions file to a chat request
+  via the Copilot Chat UI or command palette.
+
+### Effect on the prompt
+
+When attached, the file’s contents are injected verbatim into Copilot’s prompt
+context (system or user message). This steers output toward project-specific
+rules such as coding style, architectural constraints, or terminology,
+without requiring you to restate them in every prompt. For example,
 you might include preferred coding style, architectural guidelines,
 or project-specific terminology, and Copilot will then attempt to obey those
 instructions in its suggestions.
 
-## Prompt Files (.prompt.md)
+## *.prompt.md (prompt files)
 
 Prompt files provide a way to define entire reusable chat prompts
 (questions or tasks) that you or your team frequently use. They were
@@ -80,42 +63,19 @@ Location and Setup: Like instructions, prompt files can live in the workspace
 or user folders, configured via chat.promptFilesLocations setting.
 They often reside in a folder (for example, `.github/prompts/` or similar).
 
-Using Prompt Files: There are multiple ways to invoke a prompt file:
+### Usage and Format
 
-Type `/` in the Copilot Chat input, and you’ll see available prompt names
-(each prompt file becomes a slash command). For example, if you have a prompt
-file named `deploy.prompt.md`, you can run it by typing `/deploy`.
+Prompt files are invoked as slash commands in Copilot Chat
+(each `*.prompt.md` file becomes a `/command`), but can also be executed
+directly from the editor or via the Command Palette.
+Technically, a prompt file is a markdown document with optional
+YAML frontmatter that controls execution behavior.
 
-Open the prompt file in the editor and click the “Run” (▶) button in the
-editor toolbar to execute it immediately.
-
-Use the Chat: Run Prompt File... command from the Command Palette to pick
-and run a prompt.
-
-Prompt File Format: Prompt files support YAML frontmatter to specify how they
-run. Key fields include:
-
-`mode:` which chat mode to use (ask, edit, or agent). For instance,
-`mode: 'agent'` if the prompt should run in autonomous agent mode.
-
-`tools:` if in agent mode, you can list which tools are allowed for this prompt.
-
-The rest of the file’s body is the prompt text to send.
-For example, a prompt file to generate release notes could be defined as:
-
-```plaintext
----
-mode: 'agent'
-tools: ['getReleaseFeatures', 'file_search', 'read_file', ...]
----
-
-Generate release notes for the features I worked on in the current release...
-```
-
-This defines a custom agent-mode task with specific tools. You can create
-new prompt files with the `Chat: New Prompt File...` command. Prompt files are
-useful for one-click automation of common workflows (they appear as slash
-commands and can encapsulate multi-step tasks).
+The frontmatter can specify the chat `mode` (`ask`, `edit`, or `agent`) and,
+in agent mode, the set of allowed `tools`. The remainder of the file
+is treated as the prompt body and sent to Copilot. For example,
+a release-notes generator might declare `mode: agent` and list file
+or search tools, turning the prompt into a reusable, one‑command automation.
 
 Effect on Copilot: When you run a prompt file, Copilot Chat will treat its
 content as if you asked that multi-line question or issued those instructions.
@@ -125,7 +85,7 @@ complete the task.
 Prompt files essentially let you predefine complex queries or actions for
 the AI to execute.
 
-## AGENTS.md (Multi-Agent Instructions File)
+## AGENTS.md (multi-agent instructions file)
 
 `AGENTS.md` is a special markdown file introduced in August 2025 (v1.104)
 to provide shared context or instructions when you are working with multiple
@@ -164,7 +124,7 @@ agents should collaborate. Whenever you start a new chat or agent task,
 Copilot will include the text from `AGENTS.md` in the prompt it sends
 to the model, which helps align the AI’s output with your project’s context.
 
-## Agent Skills (SKILL.md files)
+## SKILL.md (agent skills)
 
 Agent Skills were introduced as an experimental feature in
 December 2025 (v1.108) to “teach” the AI new capabilities or domain
@@ -240,7 +200,7 @@ is there and will be pulled in automatically.
 Essentially, Agent Skills make the AI smarter about your project’s domain
 by providing on-demand contextual plugins in the form of files.
 
-## MCP Configuration (mcp.json for Tools/Servers)
+## mcp.json (MCP configuration for tools and servers)
 
 MCP (Model Context Protocol) is an extensibility feature that connects
 AI agents with external tools, APIs, or services by defining “MCP servers.”
@@ -376,99 +336,73 @@ simple files in your codebase. These features were gradually rolled out
 through 2025, so ensure you’re on a recent VS Code version and have the
 appropriate settings toggled to take advantage of them.
 
-1) Commit message generation: file-based tuning (VS Code 1.96+)
-What shipped
+## Additional File‑Based Instruction Hooks (Pre‑1.100 Features)
 
-VS Code added custom instructions for commit message generation in v1.96 (Nov 2024).
+Before the broader unification around `.instructions.md` and `.prompt.md`,
+VS Code had already started introducing *file‑backed instruction hooks*
+for specific Copilot features. These are not standalone file conventions,
+but targeted configuration points where instruction files are appended
+to the underlying prompt for a particular action.
 
-How to configure
+### Commit Message Generation (VS Code 1.96+)
 
-Setting:
+In November 2024 (v1.96), VS Code added support for custom instructions
+when generating commit messages. These instructions are appended directly
+to the prompt Copilot uses when proposing a commit message.
 
-github.copilot.chat.commitMessageGeneration.instructions
+Configuration is done via the setting:
+`github.copilot.chat.commitMessageGeneration.instructions`
 
-It accepts either:
+This setting accepts either inline instruction text or references to one
+or more files from your workspace. Unlike `copilot-instructions.md`,
+there is no fixed filename or location: any markdown file can be used,
+as long as it is referenced by path.
 
-inline instructions ({ "text": "..." })
+In practice, teams use this to encode commit conventions such
+as required formats (e.g. Conventional Commits), tone and tense rules,
+maximum summary length, or project‑specific prefixes and components.
+Because the instructions are injected verbatim into the generation prompt,
+they act as a lightweight but effective policy layer.
 
-or file references ({ "file": "path/to/file.md" })
+### “Review Selection” Instructions (VS Code 1.95+)
 
-…and VS Code explicitly says these instructions are appended to the prompt used to generate the commit message.
+In October 2024 (v1.95), VS Code introduced customizable instructions
+for Copilot’s *review on selection* feature. This allows you to guide
+how Copilot performs quick reviews on selected code snippets.
 
-Where the file can live
+The configuration entry point is:
+`github.copilot.chat.reviewSelection.instructions`
 
-This is not a standardized filename like copilot-instructions.md. Instead, you can put the file anywhere in the workspace, and reference it by path from your workspace (typical: guidance/commit.md, .github/instructions/commit.instructions.md, etc.). The release notes call it “a file from your workspace”.
+As with commit messages, instructions can be provided inline or via one or
+more workspace files. The documentation explicitly shows multiple files
+being combined, which makes this mechanism suitable for layered review
+policies (for example, separate backend and frontend guidelines).
 
-What to put in the file 🧩
+These instruction files typically act as a review rubric: what dimensions
+to evaluate (correctness, security, performance), what to ignore
+(generated code, formatting‑only changes), and what structure the output
+should follow (findings, severity, suggested fixes).
+This keeps review feedback consistent without requiring full agent mode.
 
-Common patterns that work well:
+### Pull Request Title and Description Generation
 
-Required format (Conventional Commits, Jira ticket prefix, etc.)
+VS Code also exposes file‑based instructions for generating pull request
+titles and descriptions through the GitHub integration.
 
-Allowed/required sections (summary + body + breaking changes)
+The relevant setting is:
+`github.copilot.chat.pullRequestDescriptionGeneration.instructions`
 
-Tone / tense rules (“imperative mood”, “max 72 chars”, etc.)
+Here, instruction files are commonly used to mirror a repository’s PR template:
+required sections (motivation, changes, testing), checklists, deployment notes,
+or stylistic rules for summaries. As with other targeted hooks, these
+instructions are appended to the prompt at generation time rather
+than acting as global Copilot context.
 
-Project-specific keywords / components list
+### How These Fit into the Overall Model
 
-2) “Review selection” instructions: file-based review policy (VS Code 1.95+)
-What shipped
-
-VS Code added support for custom review instructions for Copilot’s “quick review on code selection” in v1.95 (Oct 2024).
-
-How to configure
-
-Setting:
-
-github.copilot.chat.reviewSelection.instructions
-
-Same mechanism:
-
-inline text, or
-
-one or multiple files
-
-The official docs show an example with two file references (e.g., backend + frontend review guidelines).
-
-Where files can live
-
-Again: any path inside your workspace (example uses guidance/backend-review-guidelines.md, guidance/frontend-review-guidelines.md).
-
-What to put in review instruction files 🧠
-
-This is best used as a “review rubric”, for example:
-
-what to check (security, performance, correctness, error handling)
-
-what to ignore (generated code, formatting-only diffs)
-
-what to output (bulleted findings + severity + suggested patch)
-
-project-specific pitfalls (threading model, i18n, logging policy)
-
-3) PR title/description generation instructions: file-based (docs)
-What exists in VS Code
-
-VS Code has “smart actions” to generate:
-
-commit message
-
-PR title and description (via Source Control / GitHub PR experience)
-
-How to tune PR description generation
-
-Setting:
-
-github.copilot.chat.pullRequestDescriptionGeneration.instructions
-
-The docs show this as a list of instruction objects, same as above (inline text or file).
-
-What to put there ✍️
-
-Typical:
-
-required PR template sections (Motivation / Changes / Testing / Risks)
-
-include checklists, deployment notes, migration steps
-
-style rules (“include a list of key changes”) — the docs use this exact kind of instruction
+These early, feature‑specific hooks predate the more general instruction
+and prompt file system introduced in 2025, but conceptually they follow
+the same pattern: *small, scoped instruction files that are injected only
+when a particular action is invoked*. Understanding them helps explain
+the evolution toward today’s unified, file‑based AI customization model
+in VS Code.
