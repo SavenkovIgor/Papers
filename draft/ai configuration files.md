@@ -97,50 +97,32 @@ complete the task.
 Prompt files essentially let you predefine complex queries or actions for
 the AI to execute.
 
-## AGENTS.md (multi-agent instructions file)
+## AGENTS.md (simple instructions file)
 
 [spec](https://agents.md)
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
-`AGENTS.md` is a special markdown file introduced
-to provide shared context or instructions when you are working with multiple
-AI agents in VS Code. Think of it as a README for AI agents in your project.
+`AGENTS.md` is a lightweight convention for providing **always-on, shared context**
+to AI agents at the workspace or folder level. In VS Code, its contents are
+implicitly included in agent interactions without manual attachment.
 
-Purpose: The `AGENTS.md` file is automatically included as additional context
+In practice, `AGENTS.md` plays a role similar to a *README for AI*: it can describe
+what the project is about, outline high-level conventions, or sketch expected
+agent roles. The format is intentionally loose and not a strict standard.
 
-**Scope of application:** `AGENTS.md` applies implicitly to all chat queries
-within its workspace or folder scope, without requiring explicit attachment
-or invocation.
+**Scope and behavior (briefly):**
 
-for Copilot (and other agents) in your workspace. It’s useful especially for
-teams or scenarios using more than one AI agent (e.g. Copilot plus custom
-agents) to coordinate their behavior or give them project-wide guidance.
-You might include high-level project notes, coding conventions, or a
-description of each agent’s role.
+- A root-level `AGENTS.md` applies to the entire workspace.
+- Optional nested `AGENTS.md` files may apply to subfolders.
+- Inclusion is automatic when the feature is enabled.
 
-Location: Place `AGENTS.md` at the root of your workspace repository.
-In a multi-root workspace, you can have one in each root. By default,
-VS Code will detect this file and include it. introduced,
-support for `AGENTS.md` is enabled by default (controlled by the
-`chat.useAgentsMdFile` setting). When enabled, VS Code looks for an
-`AGENTS.md` in the workspace root(s) and automatically uses it
-as context for all chat queries.
+Compared to other mechanisms:
 
-Nested `AGENTS.md` files: Initially, only root-level `AGENTS.md` was supported.
-Later updates introduced nested `AGENTS.md` (experimental) which
-allows additional `AGENTS.md` files in subfolders.
-If `chat.useNestedAgentsMdFiles` is enabled, VS Code will recursively
-discover `AGENTS.md` files in subdirectories and include them,
-noting their relative path context.
-This is useful if you want different instructions for different parts of
-a large project (for example, one `AGENTS.md` in `frontend/` and another in
-`backend/` with domain-specific guidance).
+- **`AGENTS.md`** provides implicit background context.
+- **`*.instructions.md`** and **`*.prompt.md`** provide explicit, scoped control.
 
-Content: The `AGENTS.md` format is open-ended (an emerging standard in the
-AI community). You can write any information or directives here that you want
-the AI to be aware of for the whole project. For instance, you might describe
-project architecture, coding standards, or instruct the AI on how multiple
-agents should collaborate.
+`AGENTS.md` is useful for coarse, descriptive context, but offers limited
+precision and control compared to instruction files, prompts, or skills.
 
 ## SKILL.md (agent skills)
 
