@@ -63,7 +63,7 @@ instructions in its suggestions.
 
 Prompt files provide a way to define entire reusable chat prompts
 (questions or tasks) that you or your team frequently use. They were
-standardized in v1.100 alongside instructions files. A prompt file
+standardized alongside instructions files. A prompt file
 (suffix `.prompt.md`) contains a complete chat request, including any preset
 question/task and even which AI “mode” and tools to use.
 
@@ -173,7 +173,7 @@ For backward compatibility, it also looks in a root folder named
 Anthropic’s Claude agent). New projects should use the `.github/skills/`
 convention.
 
-Enabling Skills: The feature is experimental in VS Code 1.108, so you’ll need
+Enabling Skills: The feature is experimental in VS Code, so you’ll need
 to enable the setting chat.useAgentSkills to activate skill detection.
 Once enabled, VS Code will scan the above folders for skills.
  Skills are not loaded all at once; instead, they are loaded on-demand.
@@ -233,7 +233,7 @@ MCP (Model Context Protocol) is an extensibility feature that connects
 AI agents with external tools, APIs, or services by defining “MCP servers.”
 In simpler terms, MCP lets Copilot use external resources (like web APIs,
 databases, GitHub operations, etc.) via a standardized interface.
-VS Code added robust MCP support during 2025
+VS Code added robust MCP support
 to power Copilot’s Agent Mode tools.
 
 What is mcp.json: It is a JSON configuration file where you list the MCP
@@ -360,10 +360,10 @@ By leveraging these, you can deeply customize Copilot’s behavior – guiding
 its coding style, instructing it with project knowledge, enabling it to use
 new tools, or even orchestrating multiple AI “agents” together – all through
 simple files in your codebase. These features were gradually rolled out
-through 2025, so ensure you’re on a recent VS Code version and have the
+, so ensure you’re on a recent VS Code version and have the
 appropriate settings toggled to take advantage of them.
 
-## Additional File‑Based Instruction Hooks (Pre‑1.100 Features)
+## Additional File‑Based Instruction Hooks
 
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
@@ -373,9 +373,9 @@ for specific Copilot features. These are not standalone file conventions,
 but targeted configuration points where instruction files are appended
 to the underlying prompt for a particular action.
 
-### Commit Message Generation (VS Code 1.96+)
+### Commit Message Generation
 
-In November 2024 (v1.96), VS Code added support for custom instructions
+Previously, VS Code added support for custom instructions
 when generating commit messages. These instructions are appended directly
 to the prompt Copilot uses when proposing a commit message.
 
@@ -393,9 +393,9 @@ maximum summary length, or project‑specific prefixes and components.
 Because the instructions are injected verbatim into the generation prompt,
 they act as a lightweight but effective policy layer.
 
-### “Review Selection” Instructions (VS Code 1.95+)
+### “Review Selection” Instructions
 
-In October 2024 (v1.95), VS Code introduced customizable instructions
+Previously, VS Code introduced customizable instructions
 for Copilot’s *review on selection* feature. This allows you to guide
 how Copilot performs quick reviews on selected code snippets.
 
