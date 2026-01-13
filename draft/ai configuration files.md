@@ -349,62 +349,31 @@ appropriate settings toggled to take advantage of them.
 
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
-Before the broader unification around `.instructions.md` and `.prompt.md`,
-VS Code had already started introducing *file‑backed instruction hooks*
-for specific Copilot features. These are not standalone file conventions,
-but targeted configuration points where instruction files are appended
-to the underlying prompt for a particular action.
+VS Code introduced several **feature‑specific instruction hooks**.
+These are targeted settings that let you append instruction text
+(inline or via referenced markdown files) to Copilot’s prompt
+for a *particular action*, rather than globally.
 
-### Commit Message Generation
+All they share the same core characteristics:
 
-Previously, VS Code added support for custom instructions
-when generating commit messages. These instructions are appended directly
-to the prompt Copilot uses when proposing a commit message.
+- They are configured via dedicated settings keys
+- Instructions can be provided inline or loaded from arbitrary workspace files
+- The referenced instructions are injected *verbatim* into the prompt
+  for that specific feature
+- They act as lightweight, scoped policy layers rather than general AI context
 
-Configuration is done via the setting:
-`github.copilot.chat.commitMessageGeneration.instructions`
+Currently existing hooks include:
 
-This setting accepts either inline instruction text or references to one
-or more files from your workspace. Unlike `copilot-instructions.md`,
-there is no fixed filename or location: any markdown file can be used,
-as long as it is referenced by path.
+- **Commit message generation**
+  (`github.copilot.chat.commitMessageGeneration.instructions`) – commonly used
+  to enforce commit formats, tone, and length (e.g. Conventional Commits).
+- **Review‑on‑selection**
+  (`github.copilot.chat.reviewSelection.instructions`) – used to define review
+  rubrics, focus areas, exclusions, and output structure for quick code reviews.
+- **Pull request title and description generation**
+  (`github.copilot.chat.pullRequestDescriptionGeneration.instructions`) –
+  typically aligned with PR templates, required sections, and stylistic rules.
 
-In practice, teams use this to encode commit conventions such
-as required formats (e.g. Conventional Commits), tone and tense rules,
-maximum summary length, or project‑specific prefixes and components.
-Because the instructions are injected verbatim into the generation prompt,
-they act as a lightweight but effective policy layer.
-
-### “Review Selection” Instructions
-
-Previously, VS Code introduced customizable instructions
-for Copilot’s *review on selection* feature. This allows you to guide
-how Copilot performs quick reviews on selected code snippets.
-
-The configuration entry point is:
-`github.copilot.chat.reviewSelection.instructions`
-
-As with commit messages, instructions can be provided inline or via one or
-more workspace files. The documentation explicitly shows multiple files
-being combined, which makes this mechanism suitable for layered review
-policies (for example, separate backend and frontend guidelines).
-
-These instruction files typically act as a review rubric: what dimensions
-to evaluate (correctness, security, performance), what to ignore
-(generated code, formatting‑only changes), and what structure the output
-should follow (findings, severity, suggested fixes).
-This keeps review feedback consistent without requiring full agent mode.
-
-### Pull Request Title and Description Generation
-
-VS Code also exposes file‑based instructions for generating pull request
-titles and descriptions through the GitHub integration.
-
-The relevant setting is:
-`github.copilot.chat.pullRequestDescriptionGeneration.instructions`
-
-Here, instruction files are commonly used to mirror a repository’s PR template:
-required sections (motivation, changes, testing), checklists, deployment notes,
-or stylistic rules for summaries. As with other targeted hooks, these
-instructions are appended to the prompt at generation time rather
-than acting as global Copilot context.
+Conceptually, these hooks predate but closely resemble modern
+instruction files: they are **action‑scoped**, manually wired through settings,
+and applied only at generation time for the relevant Copilot feature.
