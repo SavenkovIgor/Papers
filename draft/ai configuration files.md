@@ -13,6 +13,8 @@ the relevant settings for enabling them.
 
 ## *.instructions.md (custom instruction files)
 
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+
 Instruction files provide reusable, file-backed guidance that is injected into
 Copilot’s prompt context. They are not standalone prompts, but
 *policy layers* that shape how Copilot responds.
@@ -57,6 +59,8 @@ instructions in its suggestions.
 
 ## *.prompt.md (prompt files)
 
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+
 Prompt files provide a way to define entire reusable chat prompts
 (questions or tasks) that you or your team frequently use. They were
 standardized in v1.100 alongside instructions files. A prompt file
@@ -94,6 +98,9 @@ Prompt files essentially let you predefine complex queries or actions for
 the AI to execute.
 
 ## AGENTS.md (multi-agent instructions file)
+
+[spec](https://agents.md)
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 `AGENTS.md` is a special markdown file introduced
 to provide shared context or instructions when you are working with multiple
@@ -136,6 +143,9 @@ project architecture, coding standards, or instruct the AI on how multiple
 agents should collaborate.
 
 ## SKILL.md (agent skills)
+
+[spec](https://agentskills.io/home)
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 
 Agent Skills introduced to “teach” the AI new capabilities or domain
 knowledge by providing skill packages. A Skill is essentially a bundle
@@ -215,6 +225,9 @@ Essentially, Agent Skills make the AI smarter about your project’s domain
 by providing on-demand contextual plugins in the form of files.
 
 ## mcp.json (MCP configuration for tools and servers)
+
+[spec](https://modelcontextprotocol.io)
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
 MCP (Model Context Protocol) is an extensibility feature that connects
 AI agents with external tools, APIs, or services by defining “MCP servers.”
@@ -352,6 +365,8 @@ appropriate settings toggled to take advantage of them.
 
 ## Additional File‑Based Instruction Hooks (Pre‑1.100 Features)
 
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+
 Before the broader unification around `.instructions.md` and `.prompt.md`,
 VS Code had already started introducing *file‑backed instruction hooks*
 for specific Copilot features. These are not standalone file conventions,
@@ -411,12 +426,3 @@ required sections (motivation, changes, testing), checklists, deployment notes,
 or stylistic rules for summaries. As with other targeted hooks, these
 instructions are appended to the prompt at generation time rather
 than acting as global Copilot context.
-
-### How These Fit into the Overall Model
-
-These early, feature‑specific hooks predate the more general instruction
-and prompt file system introduced in 2025, but conceptually they follow
-the same pattern: *small, scoped instruction files that are injected only
-when a particular action is invoked*. Understanding them helps explain
-the evolution toward today’s unified, file‑based AI customization model
-in VS Code.
