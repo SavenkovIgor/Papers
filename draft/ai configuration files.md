@@ -1,6 +1,7 @@
-# AI context configuration files
+# AI Context Artifacts
 
-Overview of VS Code’s AI Customization Files
+File-based artifacts that define what an AI knows, how it behaves,
+and what it is allowed to do in a project.
 
 Visual Studio Code provides a growing set of file‑based mechanisms that allow
 you to tune the behavior of its built‑in GitHub Copilot AI using configuration
@@ -41,298 +42,147 @@ of optional YAML Frontmatter prefix and a free-form body
 - **GitHub Default location for scoped instructions:** The recommended location for
   project-specific instruction files is the
   `.github/instructions/<instruction_name>.instructions.md`
+- **VS Code custom location:** You can also place instruction files
+  at any path defined with setting: `chat.instructionsFilesLocations`
 
 ## *.prompt.md (prompt files)
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) ]
 
-Prompt files provide a way to define entire reusable chat prompts
-(questions or tasks) that you or your team frequently use. They were
-standardized alongside instructions files. A prompt file
-(suffix `.prompt.md`) contains a complete chat request, including any preset
-question/task and even which AI “mode” and tools to use.
+Prompt files define **fully‑formed, reusable chat requests** that can be executed
+explicitly by a user. Unlike instruction files, they do not describe behavioral
+constraints, but instead encode a concrete task or question.
 
-Location and Setup: Like instructions, prompt files can live in the workspace
-or user folders, configured via chat.promptFilesLocations setting.
-They often reside in a folder (for example, `.github/prompts/` or similar).
+Prompt files follow the `*.prompt.md` naming convention and consist of an optional
+YAML frontmatter prefix and a free‑form Markdown body.
 
-### Usage and Format
+### Execution model
 
-Prompt files are invoked as slash commands in Copilot Chat
-(each `*.prompt.md` file becomes a `/command`), but can also be executed
-directly from the editor or via the Command Palette.
-Technically, a prompt file is a markdown document with optional
-YAML frontmatter that controls execution behavior.
+- Prompt files are **never applied automatically** - they must be explicitly
+  invoked by the user via slash commands.
 
-The frontmatter can specify the chat `mode` (`ask`, `edit`, or `agent`) and,
-in agent mode, the set of allowed `tools`. The remainder of the file
-is treated as the prompt body and sent to Copilot. For example,
-a release-notes generator might declare `mode: agent` and list file
-or search tools, turning the prompt into a reusable, one‑command automation.
+### Invocation methods
 
-**Scope of application:** Prompt files apply at the level of a single explicit
-invocation (slash command, command palette action, or direct execution)
-and affect only that specific request.
+- As a **slash command** in chat (each prompt file becomes a `/command`).
+- Via **direct execution** from the editor.
 
-Effect on Copilot: When you run a prompt file, Copilot Chat will treat its
-content as if you asked that multi-line question or issued those instructions.
-If mode: agent is set, Copilot will autonomously use the specified tools to
-complete the task.
+### Project placement
 
-Prompt files essentially let you predefine complex queries or actions for
-the AI to execute.
+- **GitHub Default location for prompt files:** - `.github/prompts/<prompt_name>.prompt.md`
+- **VS Code custom location**: at path defined with setting: `chat.promptFilesLocations`
 
-## AGENTS.md (simple instructions file)
+## AGENTS.md (shared agent context)
 
 [ [Agents specification](https://agents.md) ]
+
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
-`AGENTS.md` is a lightweight convention for providing **always-on, shared context**
-to AI agents at the workspace or folder level. In VS Code, its contents are
-implicitly included in agent interactions without manual attachment.
+`AGENTS.md` defines **persistent, shared background context** for AI agents.
+Its contents are implicitly included in agent interactions without requiring
+explicit attachment or invocation.
 
-In practice, `AGENTS.md` plays a role similar to a *README for AI*: it can describe
-what the project is about, outline high-level conventions, or sketch expected
-agent roles. The format is intentionally loose and not a strict standard.
+The file is intentionally loosely specified and acts as a descriptive rather
+than normative artifact.
 
-**Scope and behavior (briefly):**
+### Context injection rules
 
-- A root-level `AGENTS.md` applies to the entire workspace.
-- Optional nested `AGENTS.md` files may apply to subfolders.
-- Inclusion is automatic when the feature is enabled.
+- A root‑level `AGENTS.md` is injected into all agent interactions.
+- Nested `AGENTS.md` files may apply to subdirectories.
+- Injection is automatic when agent features are enabled.
 
-Compared to other mechanisms:
+### Intended usage
 
-- **`AGENTS.md`** provides implicit background context.
-- **`*.instructions.md`** and **`*.prompt.md`** provide explicit, scoped control.
+Typical contents include:
 
-`AGENTS.md` is useful for coarse, descriptive context, but offers limited
-precision and control compared to instruction files, prompts, or skills.
+- High‑level project descriptions
+- Architectural overviews
+- Agent role expectations
+- Domain terminology
+
+`AGENTS.md` is not designed for fine‑grained constraints or task definitions.
+
+### Project placement
+
+- Workspace root: `AGENTS.md`
+- Optional subdirectory‑scoped `AGENTS.md` files
 
 ## SKILL.md (agent skills)
 
-[ [SKILL file specification](https://agentskills.io/home) ]
+[ [Skill specification](https://agentskills.io/home) ]
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) ]
 
-Agent Skills introduced to “teach” the AI new capabilities or domain
-knowledge by providing skill packages. A Skill is essentially a bundle
-of instructions and resources that the Copilot coding agent can load
-on demand when a certain topic comes up.
+A Skill represents a **conditionally loaded capability bundle** that provides
+specialized knowledge or procedures to an AI agent.
 
-What is a Skill: A skill is represented by a folder in your project that
-contains all the materials needed for that capability – for example,
-custom instructions, templates, or data relevant to the skill.
-Each skill folder must include a `SKILL.md` file which defines the
-skill’s behavior and metadata. The `SKILL.md` is a Markdown file
-(with YAML frontmatter for metadata) that describes what the skill is for
-and how to execute it. You can also include supporting files in the
-skill folder (scripts, config files, example data, etc.) that the
-AI might use when performing the skill.
+Each skill is defined by a directory containing a mandatory `SKILL.md` file and
+optional supporting resources.
 
-Location: VS Code automatically detects skills in two locations:
+### Skill activation model
 
-The recommended location is your repository’s `.github/skills/` directory.
-Each subdirectory under this corresponds to one skill (for example,
-`.github/skills/test-writer/SKILL.md` for a “test writing” skill).
+- Skills are **not always active**.
+- A skill is loaded only when the agent determines it is relevant to the
+  current request.
+- Relevance is inferred primarily from metadata in `SKILL.md`.
 
-For backward compatibility, it also looks in a root folder named
-`.claude/skills/` (this was used by early adopters and relates to
-Anthropic’s Claude agent). New projects should use the `.github/skills/`
-convention.
+### Skill file structure
 
-Enabling Skills: The feature is experimental in VS Code, so you’ll need
-to enable the setting chat.useAgentSkills to activate skill detection.
-Once enabled, VS Code will scan the above folders for skills.
- Skills are not loaded all at once; instead, they are loaded on-demand.
- This means Copilot will include a skill’s instructions only when it determines
- that the skill is relevant to your current query. The YAML metadata in
- `SKILL.md` usually contains a brief description or trigger words that
- help Copilot decide when to use that skill. When a query matches a
- skill’s description criteria, Copilot pulls in the `SKILL.md` content
- (and possibly related files in that skill folder) into the prompt
- context automatically.
+`SKILL.md` consists of:
 
-Skill File Contents: In the `SKILL.md`, you typically provide:
+- YAML frontmatter describing the skill’s purpose and activation criteria
+- A Markdown body containing detailed instructions or domain knowledge
 
-A YAML header (frontmatter) with fields like a name, a description
-(what the skill does / when to invoke it), and possibly pointers
-to tool requirements or resource files.
+Additional files in the same directory may be referenced by the skill.
 
-The body of `SKILL.md` contains the detailed instructions or knowledge
-the AI should apply when the skill is invoked. For example, if you create
-a skill for writing unit tests, the `SKILL.md` might include guidelines
-for test structure, examples, or a specific testing approach
-the AI should follow. It could even reference a code template file
-in the skill folder.
+### Project placement
 
-Example: A skill folder test-writer/ might have:
+- `.github/skills/<skill-name>/SKILL.md` (recommended)
+- `.claude/skills/<skill-name>/SKILL.md` (legacy)
 
-`SKILL.md` – “Instructions for writing unit tests in this project”
-(with YAML description: "when user asks to write tests"
-so Copilot knows to load it).
+### Scope of application
 
-test-template.js – a file the skill can use as a template for generating tests.
+When activated, the skill’s contents are injected into the agent’s prompt
+context for the duration of the relevant request only.
 
-perhaps an examples/ subfolder with sample tests or data.
-
-**Scope of application:** Skills apply conditionally, at query time,
-and are fully injected only when the agent determines that a given skill
-is relevant to the current request.
-
-Effect on Copilot: Skills extend Copilot’s knowledge or toolset in
-a context-specific way. When active, they let Copilot perform specialized
-tasks it otherwise might not know how to do. The agent will only load a skill’s
-instructions when relevant, keeping the prompt concise.
-
-This mechanism allows you to inject domain-specific expertise (like how
-to interact with your custom API, or specific debugging procedures)
-into Copilot without constantly supplying that info in every prompt – the skill
-is there and will be pulled in automatically.
-Essentially, Agent Skills make the AI smarter about your project’s domain
-by providing on-demand contextual plugins in the form of files.
-
-## mcp.json (MCP configuration for tools and servers)
+## mcp.json (external tools configuration)
 
 [ [MCP specification](https://modelcontextprotocol.io) ]
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) ]
 
-MCP (Model Context Protocol) is an extensibility feature that connects
-AI agents with external tools, APIs, or services by defining “MCP servers.”
-In simpler terms, MCP lets Copilot use external resources (like web APIs,
-databases, GitHub operations, etc.) via a standardized interface.
-VS Code added robust MCP support
-to power Copilot’s Agent Mode tools.
+`mcp.json` configures **external tool integrations** via the Model Context
+Protocol (MCP). These tools allow AI agents to perform actions outside the
+language model itself.
 
-What is mcp.json: It is a JSON configuration file where you list the MCP
-servers (external tool integrations) you want to use in your workspace.
-By convention, this file is named mcp.json and lives in your project’s
-`.vscode/` directory (workspace-specific).
-VS Code will read this config and spin up or connect to the specified servers
-to make their tools available to the AI.
+### Configuration model
 
-Defining MCP Servers: In .vscode/mcp.json, you define a top-level "servers"
-object. Each entry under it names an MCP server and provides its connection
-details. For example, a minimal entry for a remote server might look like:
+- MCP servers are declared under a top‑level `servers` object.
+- Each server entry specifies connection details such as `url` or `command`.
+- Servers may expose multiple tools to the agent.
 
-```json
-{
-  "servers": {
-    "my-mcp-server": {
-      "url": "http://localhost:3000/mcp"
-    }
-  }
-}
-```
+### Authentication and inputs
 
-This would tell VS Code to connect to an MCP server at that URL (supporting
-either Server-Sent Events or the newer streamable HTTP protocol).
-Some servers (like a local tool runner) can be launched via a shell command
-instead of a URL – in that case you’d specify a "command" and "args" instead
-of "url". For example, the built-in GitHub MCP server (which provides tools
-to manage GitHub issues/PRs) might be configured to run via a Node.js script.
+- Sensitive values are provided via an `inputs` section.
+- Tool authentication is handled by the host environment (e.g. OAuth flows).
+- Secrets are not intended to be stored directly in plaintext files.
 
-Authentication and Inputs: Many MCP servers require API keys or tokens
-(for example, a server that manages GitHub on your behalf needs your
-GitHub auth). Rather than hardcoding secrets in the JSON, VS Code’s
-Add Server workflow will use an "inputs" section to prompt you securely.
-For instance, the config might include:
+### Development mode
 
-```json
-"servers": {
-  "github": {
-     "url": "https://github-mcp.example.com",
-     "inputs": { "authToken": "<enter your token here>" }
-  }
-}
-```
+Optional development configuration may include:
 
-VS Code will handle asking for and storing that token (often via OAuth now)
-rather than saving plaintext in the file.
-Recent updates introduced a seamless OAuth flow for MCP servers so you
-can authorize them easily without manually editing tokens.
+- `watch`: file globs that trigger server restarts
+- `debug`: debugger attachment settings
 
-Dev Mode for MCP Servers: If you are developing or debugging a custom
-MCP server, you can enable “development mode” for it by adding a "dev"
- section in its config. introduced.
- The dev object supports:
+### Project placement
 
-"watch" – a glob of files to watch. If those files change,
-VS Code will auto-restart the server (great for iterative development).
+- Workspace‑local configuration: `.vscode/mcp.json`
 
-"debug" – config for attaching a debugger when the server runs.
-VS Code currently supports Node.js and Python servers (if you set
-"debug": { "type": "node" }, for example, it will launch the server
-such that VS Code can attach a debugger).
+### Scope of application
 
-Example excerpt from mcp.json with dev mode, as shown in the release notes:
+Configured tools are available to the agent **only in tool‑enabled or agent
+execution modes**.
 
-```json
-{
-  "servers": {
-    "gistpad": {
-      "command": "node",
-      "args": ["build/index.js"],
-      "dev": {
-        "watch": "build/**/*.js",
-        "debug": { "type": "node" }
-      }
-    }
-  }
-}
-```
-
-This would launch a local MCP server (named “gistpad”) with Node.js, restart
-it on changes to the build folder, and allow debugging.
-
-Using MCP in VS Code: Once your mcp.json is configured, the defined tools
-become available to Copilot when in Agent mode. Copilot’s agent can call these
-tools to perform actions (for example, call an API, run a database query,
-open a web URL, etc.). VS Code provides a command “MCP: Add Server…” to help
-you interactively add entries to mcp.json. There are also commands to manage
-trust and permissions for these servers (since they can perform powerful
-actions). For instance, you can review trusted servers or revoke access via
-commands like “MCP: Manage Trusted Servers”. By default, VS Code will trust
-no external servers until you add them.
-
-Effect on Copilot: The Model Context Protocol essentially extends the AI’s
-capabilities by giving it tools it can use autonomously. The mcp.json config
-is how you inform VS Code (and Copilot) which external tools/servers to wire in.
-For example, if you configure the GitHub MCP server, the AI gains the ability
-to create issues, comment on PRs, etc., by invoking those tool APIs.
-If you configure a custom “Docs” MCP server, the AI could fetch external
-documentation. In the chat, these appear as special commands (usually
-referenced with a #toolName syntax in prompts).
-The release notes describe that you can combine tools into tool sets and even
-have slash-commands for MCP-provided prompts. In short, mcp.json is the
-file where you customize the AI’s external tool belt.
-
-In summary, VS Code’s 2025 updates introduced a rich set of file-based
-conventions to customize AI behavior:
-
-Instructions files (`.github/copilot-instructions.md` and any
-`*.instructions.md`): for injecting style guides or rules into Copilot’s context
-
-Prompt files (`*.prompt.md`): for defining reusable AI tasks or questions
-(exposed as slash commands).
-
-`AGENTS.md`: a workspace guide for AI, automatically included in all prompts (enabled by default).
-
-Agent Skills (folders in `.github/skills/` with `SKILL.md`): to give
-Copilot new domain-specific abilities on demand (requires setting enabled).
-
-`mcp.json` (in `.vscode/`): to configure external tools and integrations
-the AI can use in Agent mode.
-
-By leveraging these, you can deeply customize Copilot’s behavior – guiding
-its coding style, instructing it with project knowledge, enabling it to use
-new tools, or even orchestrating multiple AI “agents” together – all through
-simple files in your codebase. These features were gradually rolled out
-, so ensure you’re on a recent VS Code version and have the
-appropriate settings toggled to take advantage of them.
-
-## Additional File‑Based Instruction Hooks
+## Feature‑specific instruction hooks
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
