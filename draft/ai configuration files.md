@@ -13,53 +13,38 @@ the relevant settings for enabling them.
 
 ## *.instructions.md (custom instruction files)
 
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
-Instruction files provide reusable, file-backed guidance that is injected into
-Copilot’s prompt context. They are not standalone prompts, but
-*policy layers* that shape how Copilot responds.
+Instruction files can be used as a set of rules/guidelines that
+could be applied to specific files/dirs, filetypes, or the entire workspace.
 
-### What they are
+Their naming pattern is `*.instructions.md` and these files consist
+of optional YAML Frontmatter prefix and a free-form body
+(preferred Markdown format).
 
-Any `*.instructions.md` file contains free-form guidance (style rules,
-conventions, constraints) that Copilot should follow when answering.
-A special case is the workspace-wide `.github/copilot-instructions.md`,
-which acts as a default instruction set for the repository.
+### Context Injection rules
 
-### How they are applied
-
-Instruction files can be attached in two ways:
-
-- **Automatically**, via YAML frontmatter:
-
-```yaml
----
-applyTo: '**/*.ts'
----
-```
-
-When a chat query involves a matching file, the instructions are auto-included.
-
+- **No scope at Frontmatter prefix:** - the entire file body is injected
+  as-is into Copilot’s prompt context for *all* chat queries.
+- **With `applyTo` scope at Frontmatter prefix:** - the file body
+  is injected only when the current chat query involves files matching
+  the specified glob pattern.
 - **Manually**, by attaching an instructions file to a chat request
   via the Copilot Chat UI or command palette.
 
-### Effect on the prompt
+### Project placement
 
-**Scope of application:** Instruction files apply either to the entire workspace
- (for `.github/copilot-instructions.md`), to a subset of files matched by
- `applyTo`, or to an individual chat request when attached manually.
-
-When attached, the file’s contents are injected verbatim into Copilot’s prompt
-context (system or user message). This steers output toward project-specific
-rules such as coding style, architectural constraints, or terminology,
-without requiring you to restate them in every prompt. For example,
-you might include preferred coding style, architectural guidelines,
-or project-specific terminology, and Copilot will then attempt to obey those
-instructions in its suggestions.
+- **Global instructions file:** You can place a global instructions file
+  `.github/copilot-instructions.md` that would apply to the entire repository.
+  but you can achieve the same effect by placing a file at `/instructions/`
+  subfolder with no `applyTo` scope.
+- **GitHub Default location for scoped instructions:** The recommended location for
+  project-specific instruction files is the
+  `.github/instructions/<instruction_name>.instructions.md`
 
 ## *.prompt.md (prompt files)
 
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) ]
 
 Prompt files provide a way to define entire reusable chat prompts
 (questions or tasks) that you or your team frequently use. They were
@@ -99,8 +84,8 @@ the AI to execute.
 
 ## AGENTS.md (simple instructions file)
 
-[spec](https://agents.md)
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+[ [Agents specification](https://agents.md) ]
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
 `AGENTS.md` is a lightweight convention for providing **always-on, shared context**
 to AI agents at the workspace or folder level. In VS Code, its contents are
@@ -126,8 +111,9 @@ precision and control compared to instruction files, prompts, or skills.
 
 ## SKILL.md (agent skills)
 
-[spec](https://agentskills.io/home)
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
+[ [SKILL file specification](https://agentskills.io/home) ]
+
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) ]
 
 Agent Skills introduced to “teach” the AI new capabilities or domain
 knowledge by providing skill packages. A Skill is essentially a bundle
@@ -208,8 +194,9 @@ by providing on-demand contextual plugins in the form of files.
 
 ## mcp.json (MCP configuration for tools and servers)
 
-[spec](https://modelcontextprotocol.io)
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+[ [MCP specification](https://modelcontextprotocol.io) ]
+
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) ]
 
 MCP (Model Context Protocol) is an extensibility feature that connects
 AI agents with external tools, APIs, or services by defining “MCP servers.”
@@ -347,7 +334,7 @@ appropriate settings toggled to take advantage of them.
 
 ## Additional File‑Based Instruction Hooks
 
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
 VS Code introduced several **feature‑specific instruction hooks**.
 These are targeted settings that let you append instruction text
