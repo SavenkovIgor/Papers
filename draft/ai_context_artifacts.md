@@ -2,6 +2,27 @@
 goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
 ---
 
+<!-- TODO: Claude Code additions
+- [ ] Add Claude Code implementation details alongside VS Code/Copilot throughout:
+  - [ ] Instruction files: mention CLAUDE.md as Claude Code's equivalent (project root or subdirectories)
+  - [ ] AGENTS.md: confirm Claude Code support (already implied but could be explicit)
+  - [ ] Skills: add `.claude/skills/` path; note that Copilot supports BOTH `.github/skills/` and `.claude/skills/`
+  - [ ] MCP: add `.claude/mcp.json` and `~/.config/claude/mcp.json` paths
+- [ ] Add new Claude Code-specific artifacts:
+  - [ ] .claudeignore - gitignore-style exclusion file
+  - [ ] Hooks system - shell commands on tool events (distinct from instruction hooks)
+  - [ ] Memory/persistence - user-level CLAUDE.md at ~/.config/claude/CLAUDE.md
+- [ ] Consider restructuring sections to show tool implementations side-by-side
+- [ ] Add Claude Code docs links where relevant
+
+Claude Code documentation:
+- Main docs: https://docs.anthropic.com/en/docs/claude-code
+- Memory & CLAUDE.md: https://docs.anthropic.com/en/docs/claude-code/memory
+- Settings: https://docs.anthropic.com/en/docs/claude-code/settings
+- MCP: https://docs.anthropic.com/en/docs/claude-code/mcp
+- Hooks: https://docs.anthropic.com/en/docs/claude-code/hooks
+-->
+
 # AI Context Artifacts
 
 AI Context Artifacts are file‑based inputs that define what an AI knows,
