@@ -4,19 +4,18 @@ goal: Find common ground across tools by treating AI Context Artifacts as the pr
 
 # AI Context Artifacts
 
-File-based artifacts that define what an AI knows, how it behaves,
-and what it is allowed to do in a project.
+AI Context Artifacts are file‑based inputs that define what an AI knows,
+how it behaves, and what it is allowed to do in a project.
+They are the primary entities; IDE or tool support is just one way to
+discover and apply them.
 
-Visual Studio Code provides a growing set of file‑based mechanisms that allow
-you to tune the behavior of its built‑in GitHub Copilot AI using configuration
-files in your projects. These include custom instruction files, prompt files,
-multi‑agent instruction files (`AGENTS.md`), agent “skills” (`SKILL.md`),
-and Model Context Protocol configuration (`mcp.json`).
-Below we detail each feature, the purpose of its files, what to put in them,
-how they influence Copilot’s context and behavior, where to place them, and
-the relevant settings for enabling them.
+Most modern tools converge on a similar set of artifacts: instruction files,
+prompt files, shared agent context, skills, and tool integrations. Visual Studio
+Code (via GitHub Copilot) is a concrete implementation of these ideas using
+specific filenames, locations, and settings. Below, each artifact is defined
+first in tool‑agnostic terms, followed by how VS Code implements it.
 
-## *.instructions.md (custom instruction files)
+## Instruction files (*.instructions.md)
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
 
@@ -49,13 +48,13 @@ of optional YAML Frontmatter prefix and a free-form body
 - **VS Code custom location:** You can also place instruction files
   at any path defined with setting: `chat.instructionsFilesLocations`
 
-## *.prompt.md (prompt files)
+## Prompt files (*.prompt.md)
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) ]
 
-Prompt files define **fully‑formed, reusable chat requests** that can be executed
-explicitly by a user. Unlike instruction files, they do not describe behavioral
-constraints, but instead encode a concrete task or question.
+Prompt files define **fully‑formed, reusable chat requests**. Unlike instruction
+files, they do not describe behavioral constraints, but instead encode a concrete
+task or question.
 
 Prompt files follow the `*.prompt.md` naming convention and consist of an optional
 YAML frontmatter prefix and a free‑form Markdown body.
@@ -75,7 +74,7 @@ YAML frontmatter prefix and a free‑form Markdown body.
 - **GitHub Default location for prompt files:** - `.github/prompts/<prompt_name>.prompt.md`
 - **VS Code custom location**: at path defined with setting: `chat.promptFilesLocations`
 
-## AGENTS.md (shared agent context)
+## Shared agent context (AGENTS.md)
 
 [ [Agents specification](https://agents.md) ]
 
@@ -110,13 +109,13 @@ Typical contents include:
 - Workspace root: `AGENTS.md`
 - Optional subdirectory‑scoped `AGENTS.md` files
 
-## SKILL.md (agent skills)
+## Skills (SKILL.md)
 
 [ [Skill specification](https://agentskills.io/home) ]
 
 [ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) ]
 
-A Skill represents a **conditionally loaded capability bundle** that provides
+A skill is a **conditionally loaded capability bundle** that provides
 specialized knowledge or procedures to an AI agent.
 
 Each skill is defined by a directory containing a mandatory `SKILL.md` file and
