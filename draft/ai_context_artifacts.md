@@ -1,5 +1,5 @@
 ---
-goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary.
+goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
 ---
 
 # AI Context Artifacts
@@ -8,6 +8,11 @@ AI Context Artifacts are file‑based inputs that define what an AI knows,
 how it behaves, and what it is allowed to do in a project.
 They are the primary entities; IDE or tool support is just one way to
 discover and apply them.
+
+This article focuses on **context artifacts** - what the AI knows - not tool
+capabilities or action primitives (what levers the AI has to execute tasks).
+MCP servers are included as they configure external tool integrations, but
+the built-in capabilities of any particular AI system are out of scope.
 
 Most modern tools converge on a similar set of artifacts: instruction files,
 prompt files, shared agent context, skills, and tool integrations. Visual Studio
@@ -139,8 +144,8 @@ Additional files in the same directory may be referenced by the skill.
 
 ### Project placement
 
-- `.github/skills/<skill-name>/SKILL.md` (recommended)
-- `.claude/skills/<skill-name>/SKILL.md` (legacy)
+- `.github/skills/<skill-name>/SKILL.md` (recommended?)
+- `.claude/skills/<skill-name>/SKILL.md`
 
 ### Scope of application
 
