@@ -147,6 +147,54 @@ Additional files in the same directory may be referenced by the skill.
 When activated, the skill’s contents are injected into the agent’s prompt
 context for the duration of the relevant request only.
 
+## Custom agents (*.agent.md)
+
+[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents) ]
+
+**Custom agents** enable you to configure the AI to adopt different personas
+tailored to specific development roles and tasks. Each custom agent can have its
+own behavior, available tools, and specialized instructions. Unlike `AGENTS.md`
+which provides passive background context, custom agents are active personas that
+users explicitly switch to.
+
+Custom agent files follow the `*.agent.md` naming convention and consist of an
+optional YAML frontmatter header and a Markdown body.
+
+### Distinction from AGENTS.md and built‑in chat participants
+
+- **AGENTS.md**: passive context, always injected automatically
+- **Custom agents**: active personas, explicitly selected via agents dropdown
+- **Built‑in chat participants** (like `@workspace`, `@terminal`, `@vscode`):
+  IDE‑native features, not user‑definable
+
+### File structure
+
+**Header (optional YAML frontmatter)** may include:
+
+- `name`: the name of the custom agent (defaults to filename)
+- `description`: brief description shown as placeholder text in chat input
+- `argument-hint`: optional hint text to guide user interaction
+- `tools`: list of available tool or tool set names (built‑in, MCP, or extension‑provided)
+- `model`: the AI model to use (defaults to currently selected model)
+- `infer`: boolean to enable use as subagent (default: true)
+- `handoffs`: suggested next actions to transition between agents
+
+**Body** contains the agent implementation in Markdown format: prompts, guidelines,
+and instructions that are prepended to user chat prompts when the agent is active.
+Can reference other files via Markdown links.
+
+### Invocation model
+
+- **Interactive**: selected via agents dropdown in Chat view
+- **Programmatic**: used as subagent via APIs when `infer: true`
+- **Handoffs**: transitioning between agents with pre‑filled prompts
+
+### Project placement
+
+- **Workspace**: `.github/agents/<name>.agent.md` (detected automatically)
+- **User profile**: stored in profile folder for reuse across workspaces
+- **Organization level**: GitHub organization‑defined agents (experimental)
+
 ## mcp.json (external tools configuration)
 
 [ [MCP specification](https://modelcontextprotocol.io) ]
