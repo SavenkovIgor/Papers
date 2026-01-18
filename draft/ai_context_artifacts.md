@@ -1,3 +1,7 @@
+---
+goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary.
+---
+
 # AI Context Artifacts
 
 File-based artifacts that define what an AI knows, how it behaves,
