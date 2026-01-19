@@ -52,6 +52,10 @@ Their naming pattern is `*.instructions.md` and these files consist
 of optional YAML Frontmatter prefix and a free-form body
 (preferred Markdown format).
 
+### Use case
+
+Apply consistent coding rules and guidelines without repeating them in every chat.
+
 ### Context Injection rules
 
 - **No scope at Frontmatter prefix:** - the entire file body is injected
@@ -83,7 +87,11 @@ files, they do not describe behavioral constraints, but instead encode a concret
 task or question.
 
 Prompt files follow the `*.prompt.md` naming convention and consist of an optional
-YAML frontmatter prefix and a free‑form Markdown body.
+YAML frontmatter prefix and a free-form Markdown body.
+
+### Use case
+
+Create reusable chat commands for recurring development tasks.
 
 ### Execution model
 
@@ -112,6 +120,10 @@ explicit attachment or invocation.
 
 The file is intentionally loosely specified and acts as a descriptive rather
 than normative artifact.
+
+### Use case
+
+Provide shared project context that persists across sessions and tools.
 
 ### Context injection rules
 
@@ -146,6 +158,10 @@ specialized knowledge or procedures to an AI agent.
 
 Each skill is defined by a directory containing a mandatory `SKILL.md` file and
 optional supporting resources.
+
+### Use case
+
+Add specialized capabilities loaded only when needed for specific tasks.
 
 ### Skill activation model
 
@@ -186,7 +202,11 @@ users explicitly switch to.
 Custom agent files follow the `*.agent.md` naming convention and consist of an
 optional YAML frontmatter header and a Markdown body.
 
-### Distinction from AGENTS.md and built‑in chat participants
+### Use case
+
+Create specialized AI personas with distinct behaviors, tools, and instructions.
+
+### Distinction from AGENTS.md and built-in chat participants
 
 - **AGENTS.md**: passive context, always injected automatically
 - **Custom agents**: active personas, explicitly selected via agents dropdown
@@ -230,6 +250,10 @@ Can reference other files via Markdown links.
 `mcp.json` configures **external tool integrations** via the Model Context
 Protocol (MCP). These tools allow AI agents to perform actions outside the
 language model itself.
+
+### Use case
+
+Configure external tool integrations via the Model Context Protocol.
 
 ### Configuration model
 
@@ -275,6 +299,10 @@ All they share the same core characteristics:
 - The referenced instructions are injected *verbatim* into the prompt
   for that specific feature
 - They act as lightweight, scoped policy layers rather than general AI context
+
+### Use case
+
+Apply targeted instructions to specific Copilot features like commits or reviews.
 
 Currently existing hooks include:
 
