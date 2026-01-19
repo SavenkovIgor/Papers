@@ -41,9 +41,52 @@ Code (via GitHub Copilot) is a concrete implementation of these ideas using
 specific filenames, locations, and settings. Below, each artifact is defined
 first in tool‑agnostic terms, followed by how VS Code implements it.
 
-## Instruction files (*.instructions.md)
+## Project-wide context files
 
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
+[AGENTS.md specification](https://agents.md) |
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
+[Claude Code docs](https://docs.anthropic.com/en/docs/claude-code/memory)
+
+Project-wide context files provide **persistent background context** that is
+automatically included in all AI interactions within a project. These files
+define shared knowledge that should be available across all sessions without
+requiring explicit attachment or invocation.
+
+### Use case
+
+Provide project-wide context that persists across all AI sessions and interactions.
+
+### Context injection rules
+
+- Contents are automatically injected into all agent sessions
+
+### Common implementations
+
+Different tools use different filenames for this purpose:
+
+| File | Tool | Scope |
+|---------------|---------------|-------|
+| `./AGENTS.md` | Tool-agnostic | Project |
+| `./CLAUDE.md` | Claude Code | Project |
+| `~/.config/claude/CLAUDE.md` | Claude Code | User-level (cross-project) |
+| `./.github/copilot-instructions.md` | GitHub Copilot | Project |
+
+Typical contents include high-level project descriptions, architectural overviews,
+agent role expectations, and domain terminology.
+
+### Design philosophy
+
+These files are intentionally loosely specified and not designed for:
+
+- Fine‑grained file-specific constraints
+- Conditional application based on file types
+- Action-specific instructions
+
+For those use cases, see scoped instruction files, skills, or feature-specific hooks.
+
+## Scoped Instruction files (*.instructions.md)
+
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 Instruction files can be used as a set of rules/guidelines that
 could be applied to specific files/dirs, filetypes, or the entire workspace.
@@ -58,29 +101,23 @@ Apply consistent coding rules and guidelines without repeating them in every cha
 
 ### Context Injection rules
 
-- **No scope at Frontmatter prefix:** - the entire file body is injected
-  as-is into Copilot’s prompt context for *all* chat queries.
-- **With `applyTo` scope at Frontmatter prefix:** - the file body
-  is injected only when the current chat query involves files matching
-  the specified glob pattern.
-- **Manually**, by attaching an instructions file to a chat request
-  via the Copilot Chat UI or command palette.
+Instructions can be scoped to specific parts of the project using different approaches:
+
+- **Filesystem-based scoping:** Place context files (`AGENTS.md`, `CLAUDE.md`) in subdirectories
+  to apply them only to files within that directory and its children.
+- **Pattern-based scoping:** Use `applyTo` glob pattern in frontmatter (for `*.instructions.md`)
+  to inject instructions only when working with matching files.
+- **Manual attachment:** Attach instruction files to specific chat requests via UI or command palette.
 
 ### Project placement
 
-- **Global instructions file:** You can place a global instructions file
-  `.github/copilot-instructions.md` that would apply to the entire repository.
-  but you can achieve the same effect by placing a file at `/instructions/`
-  subfolder with no `applyTo` scope.
-- **GitHub Default location for scoped instructions:** The recommended location for
-  project-specific instruction files is the
-  `.github/instructions/<instruction_name>.instructions.md`
-- **VS Code custom location:** You can also place instruction files
-  at any path defined with setting: `chat.instructionsFilesLocations`
+- **GitHub default location:** `.github/instructions/<instruction_name>.instructions.md`
+- **VS Code custom location:** any path defined with setting: `chat.instructionsFilesLocations`
+- **Directory-scoped:** `<subdirectory>/AGENTS.md` or `<subdirectory>/CLAUDE.md`
 
 ## Prompt files (*.prompt.md)
 
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) ]
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
 
 Prompt files define **fully‑formed, reusable chat requests**. Unlike instruction
 files, they do not describe behavioral constraints, but instead encode a concrete
@@ -105,53 +142,13 @@ Create reusable chat commands for recurring development tasks.
 
 ### Project placement
 
-- **GitHub Default location for prompt files:** - `.github/prompts/<prompt_name>.prompt.md`
-- **VS Code custom location**: at path defined with setting: `chat.promptFilesLocations`
-
-## Shared agent context (AGENTS.md)
-
-[ [Agents specification](https://agents.md) ]
-
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
-
-`AGENTS.md` defines **persistent, shared background context** for AI agents.
-Its contents are implicitly included in agent interactions without requiring
-explicit attachment or invocation.
-
-The file is intentionally loosely specified and acts as a descriptive rather
-than normative artifact.
-
-### Use case
-
-Provide shared project context that persists across sessions and tools.
-
-### Context injection rules
-
-- A root‑level `AGENTS.md` is injected into all agent interactions.
-- Nested `AGENTS.md` files may apply to subdirectories.
-- Injection is automatic when agent features are enabled.
-
-### Intended usage
-
-Typical contents include:
-
-- High‑level project descriptions
-- Architectural overviews
-- Agent role expectations
-- Domain terminology
-
-`AGENTS.md` is not designed for fine‑grained constraints or task definitions.
-
-### Project placement
-
-- Workspace root: `AGENTS.md`
-- Optional subdirectory‑scoped `AGENTS.md` files
+- **GitHub default location:** `.github/prompts/<prompt_name>.prompt.md`
+- **VS Code custom location:** at path defined with setting: `chat.promptFilesLocations`
 
 ## Skills (SKILL.md)
 
-[ [Skill specification](https://agentskills.io/home) ]
-
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) ]
+[Skill specification](https://agentskills.io/home) |
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 
 A skill is a **conditionally loaded capability bundle** that provides
 specialized knowledge or procedures to an AI agent.
@@ -191,13 +188,13 @@ context for the duration of the relevant request only.
 
 ## Custom agents (*.agent.md)
 
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents) ]
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
 **Custom agents** enable you to configure the AI to adopt different personas
 tailored to specific development roles and tasks. Each custom agent can have its
-own behavior, available tools, and specialized instructions. Unlike `AGENTS.md`
-which provides passive background context, custom agents are active personas that
-users explicitly switch to.
+own behavior, available tools, and specialized instructions. Unlike project-wide
+context files which provide passive background context, custom agents are active
+personas that users explicitly switch to.
 
 Custom agent files follow the `*.agent.md` naming convention and consist of an
 optional YAML frontmatter header and a Markdown body.
@@ -206,9 +203,9 @@ optional YAML frontmatter header and a Markdown body.
 
 Create specialized AI personas with distinct behaviors, tools, and instructions.
 
-### Distinction from AGENTS.md and built-in chat participants
+### Distinction from project-wide context and built-in chat participants
 
-- **AGENTS.md**: passive context, always injected automatically
+- **Project-wide context files**: passive background context, always injected automatically
 - **Custom agents**: active personas, explicitly selected via agents dropdown
 - **Built‑in chat participants** (like `@workspace`, `@terminal`, `@vscode`):
   IDE‑native features, not user‑definable
@@ -243,9 +240,8 @@ Can reference other files via Markdown links.
 
 ## mcp.json (external tools configuration)
 
-[ [MCP specification](https://modelcontextprotocol.io) ]
-
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) ]
+[MCP specification](https://modelcontextprotocol.io) |
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
 `mcp.json` configures **external tool integrations** via the Model Context
 Protocol (MCP). These tools allow AI agents to perform actions outside the
@@ -285,7 +281,7 @@ execution modes**.
 
 ## Feature‑specific instruction hooks
 
-[ [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) ]
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 VS Code introduced several **feature‑specific instruction hooks**.
 These are targeted settings that let you append instruction text
