@@ -60,13 +60,13 @@ requiring explicit attachment or invocation.
 
 Different tools use different filenames for this purpose:
 
-| File | Tool | Scope |
-|---------------|---------------|-------|
-| `./AGENTS.md` | Tool-agnostic | Project |
-| `./CLAUDE.md` | Claude Code | Project |
-| `~/.config/claude/CLAUDE.md` | Claude Code | User-level (cross-project) |
-| `./.github/copilot-instructions.md` | GitHub Copilot | Project |
-| `./.cursorrules` | Cursor | Project |
+| File                                | Tool           | Location    |
+| ----------------------------------- | -------------- | ----------- |
+| `./AGENTS.md`                       | Tool-agnostic  | In-Project  |
+| `./CLAUDE.md`                       | Claude Code    | In-Project  |
+| `./.github/copilot-instructions.md` | GitHub Copilot | In-Project  |
+| `./.cursorrules`                    | Cursor         | In-Project  |
+| `~/.config/claude/CLAUDE.md`        | Claude Code    | User-folder |
 
 Typical contents include high-level project descriptions, architectural overviews,
 agent role expectations, and domain terminology.
@@ -271,12 +271,12 @@ performance by reducing the indexed surface area.
 
 Different tools use different filenames:
 
-| File | Tool | Scope |
-|------|------|-------|
-| `.gitignore` | All tools | Excludes from indexing (honored by default) |
-| `.cursorignore` | Cursor | Excludes from all AI features |
-| `.claudeignore` | Claude Code | Excludes from all AI features |
-| `.cursorindexingignore` | Cursor | Excludes only from indexing, remains accessible |
+| File                    | Tool        | Scope                                           |
+| ----------------------- | ----------- | ------------------------------------------------|
+| `.gitignore`            | All tools   | Excludes from indexing (honored by default)     |
+| `.cursorignore`         | Cursor      | Excludes from all AI features                   |
+| `.claudeignore`         | Claude Code | Excludes from all AI features                   |
+| `.cursorindexingignore` | Cursor      | Excludes only from indexing, remains accessible |
 
 ### Exclusion scope
 
