@@ -45,7 +45,8 @@ first in tool‑agnostic terms, followed by how VS Code implements it.
 
 [AGENTS.md specification](https://agents.md) |
 [VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code docs](https://docs.anthropic.com/en/docs/claude-code/memory)
+[Claude Code docs](https://docs.anthropic.com/en/docs/claude-code/memory) |
+[Cursor docs](https://cursor.com/docs/context/rules)
 
 Project-wide context files provide **persistent background context** that is
 automatically included in all AI interactions within a project. These files
@@ -70,6 +71,7 @@ Different tools use different filenames for this purpose:
 | `./CLAUDE.md` | Claude Code | Project |
 | `~/.config/claude/CLAUDE.md` | Claude Code | User-level (cross-project) |
 | `./.github/copilot-instructions.md` | GitHub Copilot | Project |
+| `./.cursorrules` | Cursor | Project |
 
 Typical contents include high-level project descriptions, architectural overviews,
 agent role expectations, and domain terminology.
@@ -117,7 +119,8 @@ Instructions can be scoped to specific parts of the project using different appr
 
 ## Prompt files (*.prompt.md)
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
+[Cursor docs](https://cursor.com/docs/context/commands)
 
 Prompt files define **fully‑formed, reusable chat requests**. Unlike instruction
 files, they do not describe behavioral constraints, but instead encode a concrete
@@ -142,8 +145,14 @@ Create reusable chat commands for recurring development tasks.
 
 ### Project placement
 
-- **GitHub default location:** `.github/prompts/<prompt_name>.prompt.md`
-- **VS Code custom location:** at path defined with setting: `chat.promptFilesLocations`
+- **VS Code:** `.github/prompts/<prompt_name>.prompt.md` (or custom path via `chat.promptFilesLocations`)
+- **Cursor:** `.cursor/commands/<command_name>.md` (project-level)
+- **Cursor:** `~/.cursor/commands/<command_name>.md` (user-level, cross-project)
+
+### Team sharing
+
+Cursor supports centralized team commands managed via dashboard, automatically
+synchronized to all team members.
 
 ## Skills (SKILL.md)
 
@@ -241,7 +250,8 @@ Can reference other files via Markdown links.
 ## mcp.json (external tools configuration)
 
 [MCP specification](https://modelcontextprotocol.io) |
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
+[Cursor docs](https://cursor.com/docs/context/mcp)
 
 `mcp.json` configures **external tool integrations** via the Model Context
 Protocol (MCP). These tools allow AI agents to perform actions outside the
@@ -278,6 +288,58 @@ Optional development configuration may include:
 
 Configured tools are available to the agent **only in tool‑enabled or agent
 execution modes**.
+
+## Ignore files
+
+[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
+[Cursor docs](https://cursor.com/docs/context/ignore-files)
+
+Ignore files define which parts of the workspace should be **excluded from AI context**.
+They use gitignore-style patterns to prevent sensitive data exposure and improve
+performance by reducing the indexed surface area.
+
+### Use case
+
+Control which files and directories are accessible to AI features for security and performance.
+
+### Common implementations
+
+Different tools use different filenames:
+
+| File | Tool | Scope |
+|------|------|-------|
+| `.gitignore` | All tools | Excludes from indexing (honored by default) |
+| `.cursorignore` | Cursor | Excludes from all AI features |
+| `.claudeignore` | Claude Code | Excludes from all AI features |
+| `.cursorindexingignore` | Cursor | Excludes only from indexing, remains accessible |
+
+### Exclusion scope
+
+Files listed in ignore patterns are typically blocked from:
+
+- Semantic search and codebase indexing
+- Automatic context gathering
+- @ mention references
+- Code completion and inline edits
+
+**Note:** Terminal and MCP server tools may still access ignored files, as they
+operate outside the AI context system.
+
+### Pattern syntax
+
+Uses standard `.gitignore` syntax:
+
+- `config.json` - specific file
+- `dist/` - entire directory
+- `*.log` - file extension pattern
+- `**/logs` - nested directories
+- `!app/` - negation (exclude from ignore)
+
+### Security considerations
+
+While ignore files restrict AI access to sensitive data (API keys, credentials,
+secrets), complete protection is not guaranteed due to LLM unpredictability and
+indirect context leakage. Use as defense-in-depth, not sole protection.
 
 ## Feature‑specific instruction hooks
 
