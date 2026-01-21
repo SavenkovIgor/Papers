@@ -52,10 +52,6 @@ automatically included in all AI interactions within a project. These files
 define shared knowledge that should be available across all sessions without
 requiring explicit attachment or invocation.
 
-### Use case
-
-Provide project-wide context that persists across all AI sessions and interactions.
-
 ### Context injection rules
 
 - Contents are automatically injected into all agent sessions
@@ -89,16 +85,11 @@ For those use cases, see scoped instruction files, skills, or feature-specific h
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
-Instruction files can be used as a set of rules/guidelines that
-could be applied to specific files/dirs, filetypes, or the entire workspace.
-
-Their naming pattern is `*.instructions.md` and these files consist
-of optional YAML Frontmatter prefix and a free-form body
-(preferred Markdown format).
-
-### Use case
-
-Apply consistent coding rules and guidelines without repeating them in every chat.
+Instruction files provide a set of rules and guidelines that can be applied to
+specific files, directories or filetypes. They usually consist of optional
+YAML frontmatter and a free-form Markdown body. Use them to apply consistent
+coding rules and guidelines only to specific parts of the project.
+They define behavioral constraints rather than concrete tasks or questions.
 
 ### Context Injection rules
 
@@ -116,21 +107,15 @@ Instructions can be scoped to specific parts of the project using different appr
 - **VS Code custom location:** any path defined with setting: `chat.instructionsFilesLocations`
 - **Directory-scoped:** `<subdirectory>/AGENTS.md` or `<subdirectory>/CLAUDE.md`
 
-## Prompt files (*.prompt.md)
+## Prompts / Commands (*.prompt.md)
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
 [Cursor](https://cursor.com/docs/context/commands)
 
-Prompt files define **fully‑formed, reusable chat requests**. Unlike instruction
-files, they do not describe behavioral constraints, but instead encode a concrete
-task or question.
-
-Prompt files follow the `*.prompt.md` naming convention and consist of an optional
-YAML frontmatter prefix and a free-form Markdown body.
-
-### Use case
-
-Create reusable chat commands for recurring development tasks.
+Prompt files define **fully‑formed, reusable chat requests** for recurring
+development tasks. Unlike instruction files, they do not describe behavioral
+constraints, but instead encode concrete tasks or questions. They usually
+consist of optional YAML frontmatter and a free-form Markdown body.
 
 ### Execution model
 
@@ -158,15 +143,10 @@ synchronized to all team members.
 Docs: [Skill spec](https://agentskills.io/home) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 
-A skill is a **conditionally loaded capability bundle** that provides
-specialized knowledge or procedures to an AI agent.
-
-Each skill is defined by a directory containing a mandatory `SKILL.md` file and
-optional supporting resources.
-
-### Use case
-
-Add specialized capabilities loaded only when needed for specific tasks.
+Skills are **conditionally loaded capability bundles** that provide specialized
+knowledge or procedures to an AI agent. Each skill is defined by a directory
+containing a mandatory `SKILL.md` file and optional supporting resources. Use
+them to add specialized capabilities that load only when needed for specific tasks.
 
 ### Skill activation model
 
@@ -202,14 +182,8 @@ Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-
 tailored to specific development roles and tasks. Each custom agent can have its
 own behavior, available tools, and specialized instructions. Unlike project-wide
 context files which provide passive background context, custom agents are active
-personas that users explicitly switch to.
-
-Custom agent files follow the `*.agent.md` naming convention and consist of an
-optional YAML frontmatter header and a Markdown body.
-
-### Use case
-
-Create specialized AI personas with distinct behaviors, tools, and instructions.
+personas that users explicitly switch to. They usually consist of optional
+YAML frontmatter and a Markdown body.
 
 ### Distinction from project-wide context and built-in chat participants
 
@@ -256,10 +230,6 @@ Docs: [MCP spec](https://modelcontextprotocol.io) |
 Protocol (MCP). These tools allow AI agents to perform actions outside the
 language model itself.
 
-### Use case
-
-Configure external tool integrations via the Model Context Protocol.
-
 ### Configuration model
 
 - MCP servers are declared under a top‑level `servers` object.
@@ -296,10 +266,6 @@ Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/ignorin
 Ignore files define which parts of the workspace should be **excluded from AI context**.
 They use gitignore-style patterns to prevent sensitive data exposure and improve
 performance by reducing the indexed surface area.
-
-### Use case
-
-Control which files and directories are accessible to AI features for security and performance.
 
 ### Common implementations
 
@@ -344,22 +310,11 @@ indirect context leakage. Use as defense-in-depth, not sole protection.
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
-VS Code introduced several **feature‑specific instruction hooks**.
-These are targeted settings that let you append instruction text
-(inline or via referenced markdown files) to Copilot’s prompt
-for a *particular action*, rather than globally.
-
-All they share the same core characteristics:
-
-- They are configured via dedicated settings keys
-- Instructions can be provided inline or loaded from arbitrary workspace files
-- The referenced instructions are injected *verbatim* into the prompt
-  for that specific feature
-- They act as lightweight, scoped policy layers rather than general AI context
-
-### Use case
-
-Apply targeted instructions to specific Copilot features like commits or reviews.
+VS Code introduced several **feature‑specific instruction hooks** - targeted
+settings that let you append instruction text (inline or via referenced markdown
+files) to Copilot's prompt for a *particular action*, rather than globally. They
+are configured via dedicated settings keys, inject instructions *verbatim* into
+the prompt for specific features, and act as lightweight, scoped policy layers.
 
 Currently existing hooks include:
 
