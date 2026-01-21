@@ -16,11 +16,10 @@ goal: Find common ground across tools by treating AI Context Artifacts as the pr
 - [ ] Add Claude Code docs links where relevant
 
 Claude Code documentation:
-- Main docs: https://docs.anthropic.com/en/docs/claude-code
-- Memory & CLAUDE.md: https://docs.anthropic.com/en/docs/claude-code/memory
-- Settings: https://docs.anthropic.com/en/docs/claude-code/settings
-- MCP: https://docs.anthropic.com/en/docs/claude-code/mcp
-- Hooks: https://docs.anthropic.com/en/docs/claude-code/hooks
+- Main docs: https://code.claude.com/docs/en
+- Settings: https://code.claude.com/docs/en/settings
+- MCP: https://code.claude.com/docs/en/mcp
+- Hooks: https://code.claude.com/docs/en/hooks
 -->
 
 # AI Context Artifacts
