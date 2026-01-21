@@ -43,10 +43,10 @@ first in tool‑agnostic terms, followed by how VS Code implements it.
 
 ## Project-wide context files
 
-[AGENTS.md specification](https://agents.md) |
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code docs](https://docs.anthropic.com/en/docs/claude-code/memory) |
-[Cursor docs](https://cursor.com/docs/context/rules)
+Docs: [AGENTS.md spec](https://agents.md) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
+[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
+[Cursor](https://cursor.com/docs/context/rules)
 
 Project-wide context files provide **persistent background context** that is
 automatically included in all AI interactions within a project. These files
@@ -88,7 +88,7 @@ For those use cases, see scoped instruction files, skills, or feature-specific h
 
 ## Scoped Instruction files (*.instructions.md)
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 Instruction files can be used as a set of rules/guidelines that
 could be applied to specific files/dirs, filetypes, or the entire workspace.
@@ -119,8 +119,8 @@ Instructions can be scoped to specific parts of the project using different appr
 
 ## Prompt files (*.prompt.md)
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
-[Cursor docs](https://cursor.com/docs/context/commands)
+Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
+[Cursor](https://cursor.com/docs/context/commands)
 
 Prompt files define **fully‑formed, reusable chat requests**. Unlike instruction
 files, they do not describe behavioral constraints, but instead encode a concrete
@@ -156,8 +156,8 @@ synchronized to all team members.
 
 ## Skills (SKILL.md)
 
-[Skill specification](https://agentskills.io/home) |
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
+Docs: [Skill spec](https://agentskills.io/home) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 
 A skill is a **conditionally loaded capability bundle** that provides
 specialized knowledge or procedures to an AI agent.
@@ -197,7 +197,7 @@ context for the duration of the relevant request only.
 
 ## Custom agents (*.agent.md)
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
+Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
 **Custom agents** enable you to configure the AI to adopt different personas
 tailored to specific development roles and tasks. Each custom agent can have its
@@ -249,9 +249,9 @@ Can reference other files via Markdown links.
 
 ## mcp.json (external tools configuration)
 
-[MCP specification](https://modelcontextprotocol.io) |
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
-[Cursor docs](https://cursor.com/docs/context/mcp)
+Docs: [MCP spec](https://modelcontextprotocol.io) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
+[Cursor](https://cursor.com/docs/context/mcp)
 
 `mcp.json` configures **external tool integrations** via the Model Context
 Protocol (MCP). These tools allow AI agents to perform actions outside the
@@ -291,8 +291,8 @@ execution modes**.
 
 ## Ignore files
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
-[Cursor docs](https://cursor.com/docs/context/ignore-files)
+Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
+[Cursor](https://cursor.com/docs/context/ignore-files)
 
 Ignore files define which parts of the workspace should be **excluded from AI context**.
 They use gitignore-style patterns to prevent sensitive data exposure and improve
@@ -343,7 +343,7 @@ indirect context leakage. Use as defense-in-depth, not sole protection.
 
 ## Feature‑specific instruction hooks
 
-[VS Code docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 VS Code introduced several **feature‑specific instruction hooks**.
 These are targeted settings that let you append instruction text
