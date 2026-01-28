@@ -249,17 +249,6 @@ Ignore files define which parts of the workspace should be **excluded from AI co
 They use gitignore-style patterns to prevent sensitive data exposure and improve
 performance by reducing the indexed surface area.
 
-**Placement:**
-
-| File                    | Scope                                           | Copilot | Cursor | Claude Code |
-| ----------------------- | ------------------------------------------------| ------- | ------ | ----------- |
-| `.gitignore`            | Excludes from indexing (honored by default)     | ✓       | ✓      | ✓           |
-| `.cursorignore`         | Excludes from all AI features                   | ✗       | ✓      | ✗           |
-| `.claudeignore`         | Excludes from all AI features                   | ✗       | ✗      | ✓           |
-| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗       | ✓      | ✗           |
-
-**Exclusion scope:**
-
 Files listed in ignore patterns are typically blocked from:
 
 - Semantic search and codebase indexing
@@ -270,21 +259,16 @@ Files listed in ignore patterns are typically blocked from:
 **Note:** Terminal and MCP server tools may still access ignored files, as they
 operate outside the AI context system.
 
-**Pattern syntax:**
+Syntax is similar to `.gitignore` files.
 
-Uses standard `.gitignore` syntax:
+**Placement:**
 
-- `config.json` - specific file
-- `dist/` - entire directory
-- `*.log` - file extension pattern
-- `**/logs` - nested directories
-- `!app/` - negation (exclude from ignore)
-
-**Security considerations:**
-
-While ignore files restrict AI access to sensitive data (API keys, credentials,
-secrets), complete protection is not guaranteed due to LLM unpredictability and
-indirect context leakage. Use as defense-in-depth, not sole protection.
+| File                    | Scope                                           | Copilot | Cursor | Claude Code |
+| ----------------------- | ------------------------------------------------| ------- | ------ | ----------- |
+| `.gitignore`            | Excludes from indexing (honored by default)     | ✓       | ✓      | ✓           |
+| `.cursorignore`         | Excludes from all AI features                   | ✗       | ✓      | ✗           |
+| `.claudeignore`         | Excludes from all AI features                   | ✗       | ✗      | ✓           |
+| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗       | ✓      | ✗           |
 
 ## Feature-specific Instruction Hooks
 
