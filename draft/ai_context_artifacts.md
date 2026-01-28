@@ -22,7 +22,7 @@ the built-in capabilities of any particular AI system are out of scope.
 Most modern tools converge on a similar set of artifacts: instruction files,
 prompt files, shared agent context, skills, and tool integrations.
 
-## Project-wide instructions
+## Project-wide instructions (what LLM knows about the project)
 
 Docs: [AGENTS.md spec](https://agents.md) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
@@ -50,7 +50,7 @@ agent role expectations, and domain terminology.
 
 - Full contents are automatically injected into all agent sessions
 
-### Design philosophy
+**Design philosophy:**
 
 These files are intentionally loosely specified and not designed for:
 
@@ -60,7 +60,7 @@ These files are intentionally loosely specified and not designed for:
 
 For those use cases, see scoped instruction files, skills, or feature-specific hooks.
 
-## Scoped Instructions
+## Scoped Instructions (what LLM knows about the dir or file)
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en)
@@ -90,7 +90,7 @@ Instructions can be scoped to specific parts of the project using different appr
   to inject instructions only when working with matching files.
 - **Manual attachment:** Attach instruction files to specific chat requests via UI or command palette.
 
-## Commands / Prompts
+## Commands / Prompts (what LLM should do now)
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
 [Cursor](https://cursor.com/docs/context/commands) |
@@ -116,7 +116,7 @@ consist of optional YAML frontmatter and a free-form Markdown body.
 - Prompt files are **never applied automatically** - they must be explicitly
   invoked by the user via slash commands or direct attachment to the chat.
 
-## Skills
+## Skills (what LLM can do in project)
 
 Docs: [Skill spec](https://agentskills.io/home) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
@@ -155,7 +155,7 @@ Additional files in the same directory may be referenced by the skill.
 When activated, the skill’s contents are injected into the agent’s prompt
 context for the duration of the relevant request only.
 
-## Custom Agents
+## Custom Agents (what role LLM should play)
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
@@ -198,7 +198,7 @@ YAML frontmatter and a Markdown body.
 and instructions that are prepended to user chat prompts when the agent is active.
 Can reference other files via Markdown links.
 
-## MCP Servers
+## MCP Servers (what external tools LLM can use)
 
 Docs: [MCP spec](https://modelcontextprotocol.io) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
@@ -239,7 +239,7 @@ Optional development configuration may include:
 Configured tools are available to the agent **only in tool‑enabled or agent
 execution modes**.
 
-## Ignored files
+## Ignored files (what LLM should not see)
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
 [Cursor](https://cursor.com/docs/context/ignore-files) |
