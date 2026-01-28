@@ -4,7 +4,7 @@ goal: Find common ground across tools by treating AI Context Artifacts as the pr
 
 # AI Context Artifacts
 
-AI Context Artifacts are file‑based inputs that define what an AI knows,
+AI Context Artifacts are file-based inputs that define what an AI knows,
 how it behaves, and what it is allowed to do in a project.
 They are the primary entities; IDE or tool support is just one way to
 discover and apply them.
@@ -54,7 +54,7 @@ agent role expectations, and domain terminology.
 
 These files are intentionally loosely specified and not designed for:
 
-- Fine‑grained file-specific constraints
+- Fine-grained file-specific constraints
 - Conditional application based on file types
 - Action-specific instructions
 
@@ -96,7 +96,7 @@ Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-
 [Cursor](https://cursor.com/docs/context/commands) |
 [Claude Code](https://code.claude.com/docs/en)
 
-Prompt files define **fully‑formed, reusable chat requests** for recurring
+These files define **a reusable chat request** for recurring
 development tasks. Unlike instruction files, they do not describe behavioral
 constraints, but instead encode concrete tasks or questions. They usually
 consist of optional YAML frontmatter and a free-form Markdown body.
@@ -178,8 +178,8 @@ YAML frontmatter and a Markdown body.
   by the user via agents dropdown in Chat view.
 - Unlike project-wide context files, custom agents are active personas rather than
   passive background context.
-- Built‑in chat participants (like `@workspace`, `@terminal`, `@vscode`) are
-  IDE‑native features, not user‑definable.
+- Built-in chat participants (like `@workspace`, `@terminal`, `@vscode`) are
+  IDE-native features, not user-definable.
 - Programmatic: used as subagent via APIs when `infer: true`
 
 **File structure:**
@@ -189,7 +189,7 @@ YAML frontmatter and a Markdown body.
 - `name`: the name of the custom agent (defaults to filename)
 - `description`: brief description shown as placeholder text in chat input
 - `argument-hint`: optional hint text to guide user interaction
-- `tools`: list of available tool or tool set names (built‑in, MCP, or extension‑provided)
+- `tools`: list of available tool or tool set names (built-in, MCP, or extension-provided)
 - `model`: the AI model to use (defaults to currently selected model)
 - `infer`: boolean to enable use as subagent (default: true)
 - `handoffs`: suggested next actions to transition between agents
@@ -211,7 +211,7 @@ language model itself.
 
 **Configuration model:**
 
-- MCP servers are declared under a top‑level `servers` object.
+- MCP servers are declared under a top-level `servers` object.
 - Each server entry specifies connection details such as `url` or `command`.
 - Servers may expose multiple tools to the agent.
 
@@ -230,13 +230,13 @@ Optional development configuration may include:
 
 **Project placement:**
 
-- **Copilot:** Workspace‑local configuration: `.vscode/mcp.json` (VS Code) or IDE-specific location
+- **Copilot:** Workspace-local configuration: `.vscode/mcp.json` (VS Code) or IDE-specific location
 - **Claude Code:** Project-level: `.mcp.json` (can be checked into git for team sharing)
 - **Claude Code:** Global config: available in all projects via global settings
 
 **Scope of application:**
 
-Configured tools are available to the agent **only in tool‑enabled or agent
+Configured tools are available to the agent **only in tool-enabled or agent
 execution modes**.
 
 ## Ignored files (what LLM should not see)
@@ -252,11 +252,11 @@ performance by reducing the indexed surface area.
 **Placement:**
 
 | File                    | Scope                                           | Copilot | Cursor | Claude Code |
-| ----------------------- | ------------------------------------------------| ------ | ------ | ----------- |
-| `.gitignore`            | Excludes from indexing (honored by default)     | ✓      | ✓      | ✓           |
-| `.cursorignore`         | Excludes from all AI features                   | ✗      | ✓      | ✗           |
-| `.claudeignore`         | Excludes from all AI features                   | ✗      | ✗      | ✓           |
-| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗      | ✓      | ✗           |
+| ----------------------- | ------------------------------------------------| ------- | ------ | ----------- |
+| `.gitignore`            | Excludes from indexing (honored by default)     | ✓       | ✓      | ✓           |
+| `.cursorignore`         | Excludes from all AI features                   | ✗       | ✓      | ✗           |
+| `.claudeignore`         | Excludes from all AI features                   | ✗       | ✗      | ✓           |
+| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗       | ✓      | ✗           |
 
 **Exclusion scope:**
 
@@ -286,11 +286,11 @@ While ignore files restrict AI access to sensitive data (API keys, credentials,
 secrets), complete protection is not guaranteed due to LLM unpredictability and
 indirect context leakage. Use as defense-in-depth, not sole protection.
 
-## Feature‑specific Instruction Hooks
+## Feature-specific Instruction Hooks
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
-Feature‑specific instruction hooks are **targeted settings** that let you append
+Feature-specific instruction hooks are **targeted settings** that let you append
 instruction text (inline or via referenced markdown files) to Copilot's prompt
 for a *particular action*, rather than globally. They are configured via dedicated
 settings keys, inject instructions *verbatim* into the prompt for specific features,
@@ -298,7 +298,7 @@ and act as lightweight, scoped policy layers.
 
 **Execution model:**
 
-- Hooks are **action‑scoped** and applied only at generation time for the relevant
+- Hooks are **action-scoped** and applied only at generation time for the relevant
   Copilot feature.
 - Instructions are injected *verbatim* into the prompt for specific actions.
 - Unlike project-wide context files, hooks are manually wired through settings.
@@ -310,7 +310,7 @@ Currently existing hooks include:
 - Commit message generation
   (`github.copilot.chat.commitMessageGeneration.instructions`) – commonly used
   to enforce commit formats, tone, and length (e.g. Conventional Commits).
-- Review‑on‑selection
+- Review-on-selection
   (`github.copilot.chat.reviewSelection.instructions`) – used to define review
   rubrics, focus areas, exclusions, and output structure for quick code reviews.
 - Pull request title and description generation
@@ -320,9 +320,10 @@ Currently existing hooks include:
 **Design philosophy:**
 
 Conceptually, these hooks predate but closely resemble modern
-instruction files: they are **action‑scoped**, manually wired through settings,
+instruction files: they are **action-scoped**, manually wired through settings,
 and applied only at generation time for the relevant Copilot feature.
 
 ## Additional Sources
 
-- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices) - Anthropic's guide to effective agentic coding workflows and best practices for using Claude Code
+- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+  - Anthropic's guide to effective agentic coding workflows and best practices for using Claude Code
