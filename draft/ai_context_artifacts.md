@@ -2,7 +2,6 @@
 goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
 ---
 
-
 # AI Context Artifacts
 
 AI Context Artifacts are file‑based inputs that define what an AI knows,
@@ -23,7 +22,7 @@ the built-in capabilities of any particular AI system are out of scope.
 Most modern tools converge on a similar set of artifacts: instruction files,
 prompt files, shared agent context, skills, and tool integrations.
 
-## Project-wide context files
+## Project-wide instructions
 
 Docs: [AGENTS.md spec](https://agents.md) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
@@ -33,26 +32,23 @@ Docs: [AGENTS.md spec](https://agents.md) |
 Project-wide context files provide **persistent background context** that is
 automatically included in all AI interactions within a project. These files
 define shared knowledge that should be available across all sessions without
-requiring explicit attachment or invocation.
-
-### Context injection rules
-
-- Contents are automatically injected into all agent sessions
-
-### Common implementations
-
-Different tools use different filenames for this purpose:
-
-| File                                | Tool           | Location    | Copilot | Cursor | Claude Code |
-| ----------------------------------- | -------------- | ----------- | ------ | ------ | ----------- |
-| `./AGENTS.md`                       | Tool-agnostic  | In-Project  | ✓      | ✓      | ✓           |
-| `./CLAUDE.md`                       | Claude Code    | In-Project  | ✗      | ✗      | ✓           |
-| `./.github/copilot-instructions.md` | Copilot        | In-Project  | ✓      | ✗      | ✗           |
-| `./.cursorrules`                    | Cursor         | In-Project  | ✗      | ✓      | ✗           |
-| `~/.claude/CLAUDE.md`               | Claude Code    | User-folder | ✗      | ✗      | ✓           |
-
-Typical contents include high-level project descriptions, architectural overviews,
+requiring explicit attachment or invocation. Typical contents include
+high-level project descriptions, architectural overviews,
 agent role expectations, and domain terminology.
+
+**Placement:**
+
+| Location | File                              | Copilot | Cursor | Claude Code |
+| -------- | --------------------------------- | ------- | ------ | ----------- |
+| Project  | `AGENTS.md`                       | ✓       | ✓      | ✓           |
+| Project  | `.github/copilot-instructions.md` | ✓       | ✗      | ✗           |
+| Project  | `.cursorrules`                    | ✗       | ✓      | ✗           |
+| Project  | `CLAUDE.md`                       | ✗       | ✗      | ✓           |
+| User-dir | `~/.claude/CLAUDE.md`             | ✗       | ✗      | ✓           |
+
+**Context injection rules:**
+
+- Full contents are automatically injected into all agent sessions
 
 ### Design philosophy
 
@@ -64,7 +60,7 @@ These files are intentionally loosely specified and not designed for:
 
 For those use cases, see scoped instruction files, skills, or feature-specific hooks.
 
-## Scoped Instruction files (*.instructions.md)
+## Scoped Instructions
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en)
@@ -75,7 +71,15 @@ YAML frontmatter and a free-form Markdown body. Use them to apply consistent
 coding rules and guidelines only to specific parts of the project.
 They define behavioral constraints rather than concrete tasks or questions.
 
-### Context injection rules
+**Placement:**
+
+| Location | File                                     | Copilot | Cursor | Claude Code |
+| -------- | ---------------------------------------- | ------- | ------ | ----------- |
+| Project  | `**/AGENTS.md`                           | ✓       | ✓      | ✓           |
+| Project  | `.github/instructions/*.instructions.md` | ✓       | ✗      | ✗           |
+| Project  | `**/CLAUDE.md`                           | ✗       | ✗      | ✓           |
+
+**Context injection rules:**
 
 Instructions can be scoped to specific parts of the project using different approaches:
 
@@ -86,15 +90,7 @@ Instructions can be scoped to specific parts of the project using different appr
   to inject instructions only when working with matching files.
 - **Manual attachment:** Attach instruction files to specific chat requests via UI or command palette.
 
-### Project placement
-
-- **Copilot default location:** `.github/instructions/<instruction_name>.instructions.md`
-- **Copilot custom location:** any path defined with setting: `chat.instructionsFilesLocations` (VS Code only)
-- **Directory-scoped:** `<subdirectory>/AGENTS.md` or `<subdirectory>/CLAUDE.md`
-- **Claude Code:** `CLAUDE.md` files can be placed in project root, parent directories (monorepos),
-  or child directories (loaded on demand when working with files in those directories)
-
-## Prompts / Commands (*.prompt.md)
+## Commands / Prompts
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
 [Cursor](https://cursor.com/docs/context/commands) |
@@ -105,31 +101,22 @@ development tasks. Unlike instruction files, they do not describe behavioral
 constraints, but instead encode concrete tasks or questions. They usually
 consist of optional YAML frontmatter and a free-form Markdown body.
 
-### Execution model
+**Placement:**
+
+| Location | File                          | Copilot | Cursor | Claude Code |
+| -------- | ----------------------------- | ------- | ------ | ----------- |
+| Project  | `.github/prompts/*.prompt.md` | ✓       | ✗      | ✗           |
+| Project  | `.cursor/commands/*.md`       | ✗       | ✓      | ✗           |
+| Project  | `.claude/commands/*.md`       | ✗       | ✗      | ✓           |
+| User-dir | `~/.cursor/commands/*.md`     | ✗       | ✓      | ✗           |
+| User-dir | `~/.claude/commands/*.md`     | ✗       | ✗      | ✓           |
+
+**Context injection rules:**
 
 - Prompt files are **never applied automatically** - they must be explicitly
-  invoked by the user via slash commands.
+  invoked by the user via slash commands or direct attachment to the chat.
 
-### Invocation methods
-
-- As a **slash command** in chat (each prompt file becomes a `/command`).
-- Via **direct execution** from the editor.
-
-### Project placement
-
-- **Copilot:** `.github/prompts/<prompt_name>.prompt.md` (or custom path via `chat.promptFilesLocations` in VS Code)
-- **Cursor:** `.cursor/commands/<command_name>.md` (project-level)
-- **Cursor:** `~/.cursor/commands/<command_name>.md` (user-level, cross-project)
-- **Claude Code:** `.claude/commands/<command_name>.md` (project-level, can be checked into git)
-- **Claude Code:** `~/.claude/commands/<command_name>.md` (user-level, cross-project)
-
-### Team sharing
-
-Cursor supports centralized team commands managed via dashboard, automatically
-synchronized to all team members. Claude Code commands can be shared by checking
-`.claude/commands/` files into git.
-
-## Skills (SKILL.md)
+## Skills
 
 Docs: [Skill spec](https://agentskills.io/home) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
@@ -140,14 +127,21 @@ knowledge or procedures to an AI agent. Each skill is defined by a directory
 containing a mandatory `SKILL.md` file and optional supporting resources. Use
 them to add specialized capabilities that load only when needed for specific tasks.
 
-### Skill activation model
+**Placement:**
+
+| Location | File                                    | Copilot | Cursor | Claude Code |
+| -------- | --------------------------------------- | ------- | ------ | ----------- |
+| Project  | `.github/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✗           |
+| Project  | `.claude/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✓           |
+
+**Context injection rules:**
 
 - Skills are **not always active**.
 - A skill is loaded only when the agent determines it is relevant to the
   current request.
 - Relevance is inferred primarily from metadata in `SKILL.md`.
 
-### Skill file structure
+**File structure:**
 
 `SKILL.md` consists of:
 
@@ -156,17 +150,12 @@ them to add specialized capabilities that load only when needed for specific tas
 
 Additional files in the same directory may be referenced by the skill.
 
-### Project placement
-
-- `.github/skills/<skill-name>/SKILL.md` (Copilot)
-- `.claude/skills/<skill-name>/SKILL.md` (Claude Code; Copilot also supports this path)
-
-### Scope of application
+**Scope of application:**
 
 When activated, the skill’s contents are injected into the agent’s prompt
 context for the duration of the relevant request only.
 
-## Custom agents (*.agent.md)
+## Custom Agents
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
@@ -177,7 +166,13 @@ context files which provide passive background context, custom agents are active
 personas that users explicitly switch to. They usually consist of optional
 YAML frontmatter and a Markdown body.
 
-### Activation model
+**Placement:**
+
+| Location | File                              | Copilot | Cursor | Claude Code |
+| -------- | --------------------------------- | ------- | ------ | ----------- |
+| Project  | `.github/agents/*.agent.md`       | ✓       | ✗      | ✗           |
+
+**Context injection rules:**
 
 - Custom agents are **not automatically active** - they must be explicitly selected
   by the user via agents dropdown in Chat view.
@@ -185,8 +180,9 @@ YAML frontmatter and a Markdown body.
   passive background context.
 - Built‑in chat participants (like `@workspace`, `@terminal`, `@vscode`) are
   IDE‑native features, not user‑definable.
+- Programmatic: used as subagent via APIs when `infer: true`
 
-### File structure
+**File structure:**
 
 **Header (optional YAML frontmatter)** may include:
 
@@ -202,19 +198,7 @@ YAML frontmatter and a Markdown body.
 and instructions that are prepended to user chat prompts when the agent is active.
 Can reference other files via Markdown links.
 
-### Invocation model
-
-- **Interactive**: selected via agents dropdown in Chat view
-- **Programmatic**: used as subagent via APIs when `infer: true`
-- **Handoffs**: transitioning between agents with pre‑filled prompts
-
-### Project placement
-
-- **Workspace**: `.github/agents/<name>.agent.md` (detected automatically)
-- **User profile**: stored in profile folder for reuse across workspaces
-- **Organization level**: GitHub organization‑defined agents (experimental)
-
-## mcp.json (external tools configuration)
+## MCP Servers
 
 Docs: [MCP spec](https://modelcontextprotocol.io) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
@@ -225,37 +209,37 @@ Docs: [MCP spec](https://modelcontextprotocol.io) |
 Protocol (MCP). These tools allow AI agents to perform actions outside the
 language model itself.
 
-### Configuration model
+**Configuration model:**
 
 - MCP servers are declared under a top‑level `servers` object.
 - Each server entry specifies connection details such as `url` or `command`.
 - Servers may expose multiple tools to the agent.
 
-### Authentication and inputs
+**Authentication and inputs:**
 
 - Sensitive values are provided via an `inputs` section.
 - Tool authentication is handled by the host environment (e.g. OAuth flows).
 - Secrets are not intended to be stored directly in plaintext files.
 
-### Development mode
+**Development mode:**
 
 Optional development configuration may include:
 
 - `watch`: file globs that trigger server restarts
 - `debug`: debugger attachment settings
 
-### Project placement
+**Project placement:**
 
 - **Copilot:** Workspace‑local configuration: `.vscode/mcp.json` (VS Code) or IDE-specific location
 - **Claude Code:** Project-level: `.mcp.json` (can be checked into git for team sharing)
 - **Claude Code:** Global config: available in all projects via global settings
 
-### Scope of application
+**Scope of application:**
 
 Configured tools are available to the agent **only in tool‑enabled or agent
 execution modes**.
 
-## Ignore files
+## Ignored files
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
 [Cursor](https://cursor.com/docs/context/ignore-files) |
@@ -265,18 +249,16 @@ Ignore files define which parts of the workspace should be **excluded from AI co
 They use gitignore-style patterns to prevent sensitive data exposure and improve
 performance by reducing the indexed surface area.
 
-### Common implementations
+**Placement:**
 
-Different tools use different filenames:
+| File                    | Scope                                           | Copilot | Cursor | Claude Code |
+| ----------------------- | ------------------------------------------------| ------ | ------ | ----------- |
+| `.gitignore`            | Excludes from indexing (honored by default)     | ✓      | ✓      | ✓           |
+| `.cursorignore`         | Excludes from all AI features                   | ✗      | ✓      | ✗           |
+| `.claudeignore`         | Excludes from all AI features                   | ✗      | ✗      | ✓           |
+| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗      | ✓      | ✗           |
 
-| File                    | Tool        | Scope                                           | Copilot | Cursor | Claude Code |
-| ----------------------- | ----------- | ------------------------------------------------| ------ | ------ | ----------- |
-| `.gitignore`            | All tools   | Excludes from indexing (honored by default)     | ✓      | ✓      | ✓           |
-| `.cursorignore`         | Cursor      | Excludes from all AI features                   | ✗      | ✓      | ✗           |
-| `.claudeignore`         | Claude Code | Excludes from all AI features                   | ✗      | ✗      | ✓           |
-| `.cursorindexingignore` | Cursor      | Excludes only from indexing, remains accessible | ✗      | ✓      | ✗           |
-
-### Exclusion scope
+**Exclusion scope:**
 
 Files listed in ignore patterns are typically blocked from:
 
@@ -288,7 +270,7 @@ Files listed in ignore patterns are typically blocked from:
 **Note:** Terminal and MCP server tools may still access ignored files, as they
 operate outside the AI context system.
 
-### Pattern syntax
+**Pattern syntax:**
 
 Uses standard `.gitignore` syntax:
 
@@ -298,13 +280,13 @@ Uses standard `.gitignore` syntax:
 - `**/logs` - nested directories
 - `!app/` - negation (exclude from ignore)
 
-### Security considerations
+**Security considerations:**
 
 While ignore files restrict AI access to sensitive data (API keys, credentials,
 secrets), complete protection is not guaranteed due to LLM unpredictability and
 indirect context leakage. Use as defense-in-depth, not sole protection.
 
-## Feature‑specific instruction hooks
+## Feature‑specific Instruction Hooks
 
 Docs: [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
@@ -314,29 +296,33 @@ for a *particular action*, rather than globally. They are configured via dedicat
 settings keys, inject instructions *verbatim* into the prompt for specific features,
 and act as lightweight, scoped policy layers.
 
-### Execution model
+**Execution model:**
 
 - Hooks are **action‑scoped** and applied only at generation time for the relevant
   Copilot feature.
 - Instructions are injected *verbatim* into the prompt for specific actions.
 - Unlike project-wide context files, hooks are manually wired through settings.
 
-### Available hooks
+**Available hooks:**
 
 Currently existing hooks include:
 
-- **Commit message generation**
+- Commit message generation
   (`github.copilot.chat.commitMessageGeneration.instructions`) – commonly used
   to enforce commit formats, tone, and length (e.g. Conventional Commits).
-- **Review‑on‑selection**
+- Review‑on‑selection
   (`github.copilot.chat.reviewSelection.instructions`) – used to define review
   rubrics, focus areas, exclusions, and output structure for quick code reviews.
-- **Pull request title and description generation**
+- Pull request title and description generation
   (`github.copilot.chat.pullRequestDescriptionGeneration.instructions`) –
   typically aligned with PR templates, required sections, and stylistic rules.
 
-### Design philosophy
+**Design philosophy:**
 
 Conceptually, these hooks predate but closely resemble modern
 instruction files: they are **action‑scoped**, manually wired through settings,
 and applied only at generation time for the relevant Copilot feature.
+
+## Additional Sources
+
+- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices) - Anthropic's guide to effective agentic coding workflows and best practices for using Claude Code
