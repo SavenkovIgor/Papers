@@ -14,15 +14,19 @@ available as an extension in multiple IDEs including Visual Studio Code, JetBrai
 IDEs, and others. The implementation details described here apply to Copilot
 across all supported IDEs.
 
-This article focuses on **context artifacts** - what the AI knows - not tool
-capabilities or action primitives (what levers the AI has to execute tasks).
-MCP servers are included as they configure external tool integrations, but
-the built-in capabilities of any particular AI system are out of scope.
+Artifacts fall into two categories:
 
-Most modern tools converge on a similar set of artifacts: instruction files,
-prompt files, shared agent context, skills, and tool integrations.
+- **Knowledge Artifacts** define what the AI knows: project context, instructions, and prompts
+- **Capability Artifacts** define what the AI can do: skills, agents, and external tools
 
-## Project-wide Context
+Most modern tools converge on a similar set of artifacts across both categories.
+
+## Knowledge Artifacts
+
+Knowledge artifacts provide context and instructions to the AI - they define what
+the model knows about your project, coding standards, and common tasks.
+
+### Project-wide Context
 
 **Persistent background context** automatically included in all AI interactions.
 
@@ -30,7 +34,7 @@ prompt files, shared agent context, skills, and tool integrations.
 - Contains project descriptions, architecture, agent roles, terminology
 
 **Context injection model:** AUTO / GLOBAL
-Context is auto-injected into all agent sessions
+(Context is auto-injected into all agent sessions)
 
 **Placement:**
 
@@ -48,7 +52,7 @@ Docs:
 [Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
 [Cursor](https://cursor.com/docs/context/rules)
 
-## Scoped Context
+### Scoped Context
 
 **Context** targeted at specific files, directories, or filetypes.
 
@@ -56,7 +60,7 @@ Docs:
 - Scoped via filesystem hierarchy or glob patterns in frontmatter
 
 **Context injection model:** AUTO / SCOPED
-Context is auto-injected into specific parts of the project using different approaches:
+(Context is auto-injected into specific parts of the project)
 
 - **Filesystem-based scoping:** Place context files (`AGENTS.md`, `CLAUDE.md`) in subdirectories
   to apply them only to files within that directory and its children. Claude Code automatically
@@ -77,7 +81,7 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en)
 
-## Commands
+### Commands
 
 **Reusable chat requests** for recurring development tasks.
 
@@ -86,8 +90,7 @@ Docs:
 - Never applied automatically
 
 **Context injection model:** USER-initiated
-Commands must be explicitly invoked by the user via slash commands
-or direct attachment to the chat.
+(Commands are explicitly invoked by the user via slash commands)
 
 **Placement:**
 
@@ -104,7 +107,12 @@ Docs:
 [Cursor](https://cursor.com/docs/context/commands) |
 [Claude Code](https://code.claude.com/docs/en)
 
-## Skills
+## Capability Artifacts
+
+Capability artifacts extend what the AI can do - they define specialized skills,
+custom agents with specific roles, and integrations with external tools.
+
+### Skills
 
 **Conditionally loaded capability bundles** providing specialized knowledge.
 
@@ -145,50 +153,7 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
 [Claude Code](https://code.claude.com/docs/en)
 
-## Custom Agents
-
-**Active personas** with specialized roles, tools, and instructions.
-
-- Explicitly selected by user. Not automatically active
-- Each agent defines behavior, available tools, model preferences
-- Can be invoked as subagents programmatically when `infer: true`
-
-**Context injection model:** USER-initiated, SUBAGENT
-
-- Custom agents are **not automatically active** - they must be explicitly selected
-  by the user via agents dropdown in Chat view.
-- Unlike project-wide context files, custom agents are active personas rather than
-  passive background context.
-- Built-in chat participants (like `@workspace`, `@terminal`, `@vscode`) are
-  IDE-native features, not user-definable.
-- Programmatic: used as subagent via APIs when `infer: true`
-
-**File structure:**
-
-**Header (optional YAML frontmatter)** may include:
-
-- `name`: the name of the custom agent (defaults to filename)
-- `description`: brief description shown as placeholder text in chat input
-- `argument-hint`: optional hint text to guide user interaction
-- `tools`: list of available tool or tool set names (built-in, MCP, or extension-provided)
-- `model`: the AI model to use (defaults to currently selected model)
-- `infer`: boolean to enable use as subagent (default: true)
-- `handoffs`: suggested next actions to transition between agents
-
-**Body** contains the agent implementation in Markdown format: prompts, guidelines,
-and instructions that are prepended to user chat prompts when the agent is active.
-Can reference other files via Markdown links.
-
-**Placement:**
-
-| Location | File                              | Copilot | Cursor | Claude Code |
-| -------- | --------------------------------- | ------- | ------ | ----------- |
-| Project  | `.github/agents/*.agent.md`       | ✓       | ✗      | ✗           |
-
-Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
-
-## MCP Servers
+### MCP Servers
 
 **External tool integrations** configured via Model Context Protocol
 
@@ -230,6 +195,33 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
 [Cursor](https://cursor.com/docs/context/mcp) |
 [Claude Code](https://code.claude.com/docs/en/mcp)
+
+### Custom Agents
+
+**Active personas** with specialized roles, tools, and instructions.
+
+- Explicitly selected by user. Not automatically active
+- Each agent defines behavior, available tools, model preferences
+- Can be invoked as subagents programmatically when `infer: true`
+
+**Context injection model:** USER-initiated, SUBAGENT
+
+- Custom agents are **not automatically active** - they must be explicitly selected
+  by the user via agents dropdown in Chat view.
+- Unlike project-wide context files, custom agents are active personas rather than
+  passive background context.
+- Built-in chat participants (like `@workspace`, `@terminal`, `@vscode`) are
+  IDE-native features, not user-definable.
+- Programmatic: used as subagent via APIs when `infer: true`
+
+**Placement:**
+
+| Location | File                              | Copilot | Cursor | Claude Code |
+| -------- | --------------------------------- | ------- | ------ | ----------- |
+| Project  | `.github/agents/*.agent.md`       | ✓       | ✗      | ✗           |
+
+Docs:
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
 ## Ignored files
 
