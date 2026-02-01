@@ -29,9 +29,8 @@ prompt files, shared agent context, skills, and tool integrations.
 - Applied to all sessions without explicit invocation
 - Contains project descriptions, architecture, agent roles, terminology
 
-**Context injection rules:**
-
-- Full contents are automatically injected into all agent sessions
+**Context injection model:** AUTO / GLOBAL
+Context is auto-injected into all agent sessions
 
 **Placement:**
 
@@ -56,9 +55,8 @@ Docs:
 - Apply coding standards only to relevant parts of the project
 - Scoped via filesystem hierarchy or glob patterns in frontmatter
 
-**Context injection rules:**
-
-Instructions can be scoped to specific parts of the project using different approaches:
+**Context injection model:** AUTO / SCOPED
+Context is auto-injected into specific parts of the project using different approaches:
 
 - **Filesystem-based scoping:** Place context files (`AGENTS.md`, `CLAUDE.md`) in subdirectories
   to apply them only to files within that directory and its children. Claude Code automatically
@@ -87,10 +85,9 @@ Docs:
 - Must be explicitly invoked via slash commands or chat attachment
 - Never applied automatically
 
-**Context injection rules:**
-
-- Prompt files are **never applied automatically** - they must be explicitly
-  invoked by the user via slash commands or direct attachment to the chat.
+**Context injection model:** USER-initiated
+Commands must be explicitly invoked by the user via slash commands
+or direct attachment to the chat.
 
 **Placement:**
 
@@ -129,7 +126,7 @@ Additional files in the same directory may be referenced by the skill.
 When activated, the skill’s contents are injected into the agent’s prompt
 context for the duration of the relevant request only.
 
-**Context injection rules:**
+**Context injection model:** MODEL-DETERMINED / GRANULAR
 
 - Skills are **not always active**.
 - A skill is loaded only when the agent determines it is relevant to the
@@ -156,7 +153,7 @@ Docs:
 - Each agent defines behavior, available tools, model preferences
 - Can be invoked as subagents programmatically when `infer: true`
 
-**Context injection rules:**
+**Context injection model:** USER-initiated, SUBAGENT
 
 - Custom agents are **not automatically active** - they must be explicitly selected
   by the user via agents dropdown in Chat view.
