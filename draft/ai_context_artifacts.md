@@ -24,12 +24,6 @@ prompt files, shared agent context, skills, and tool integrations.
 
 ## Project-wide Context
 
-Docs:
-[AGENTS.md spec](https://agents.md) |
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
-[Cursor](https://cursor.com/docs/context/rules)
-
 Project-wide context files provide **persistent background context** that is
 automatically included in all AI interactions within a project. These files
 define shared knowledge that should be available across all sessions without
@@ -88,7 +82,7 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en)
 
-## Commands / Prompts
+## Commands
 
 These files define **a reusable chat request** for recurring
 development tasks. Unlike instruction files, they do not describe behavioral
