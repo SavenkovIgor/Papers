@@ -26,41 +26,24 @@ Most modern tools converge on a similar set of artifacts across both categories.
 Knowledge artifacts provide context and instructions to the AI - they define what
 the model knows about your project, coding standards, and common tasks.
 
-### Project-wide Context
+### Instructions
 
-**Persistent background context** automatically included in all AI interactions.
+Instructions provide persistent context and behavioral guidelines to the AI,
+automatically applied based on scope.
+Usually contains project description, coding standards and environment details
 
-- Applied to all sessions without explicit invocation
-- Contains project descriptions, architecture, agent roles, terminology
+#### Project-wide Instructions
 
 **Context injection model:** AUTO / GLOBAL
 (Context is auto-injected into all agent sessions)
 
-**Placement:**
-
-| Location | File                              | Copilot | Cursor | Claude Code |
-| -------- | --------------------------------- | ------- | ------ | ----------- |
-| Project  | `AGENTS.md`                       | ✓       | ✓      | ✓           |
-| Project  | `.github/copilot-instructions.md` | ✓       | ✗      | ✗           |
-| Project  | `.cursor/rules/*.md`              | ✗       | ✓      | ✗           |
-| Project  | `CLAUDE.md`                       | ✗       | ✗      | ✓           |
-| User-dir | `~/.claude/CLAUDE.md`             | ✗       | ✗      | ✓           |
-
-Docs:
-[AGENTS.md spec](https://agents.md) |
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
-[Cursor](https://cursor.com/docs/context/rules)
-
-### Scoped Context
-
-**Context** targeted at specific files, directories, or filetypes.
-
-- Apply coding standards only to relevant parts of the project
-- Scoped via filesystem hierarchy or glob patterns in frontmatter
+#### Scoped Instructions
 
 **Context injection model:** AUTO / SCOPED
 (Context is auto-injected into specific parts of the project)
+
+- Could be applyd to specific dirs, files or filetypes.
+- Scoped via filesystem hierarchy or glob patterns in frontmatter
 
 - **Filesystem-based scoping:** Place context files (`AGENTS.md`, `CLAUDE.md`) in subdirectories
   to apply them only to files within that directory and its children. Claude Code automatically
@@ -70,16 +53,22 @@ Docs:
 
 **Placement:**
 
-| Location | File                                     | Copilot | Cursor | Claude Code |
-| -------- | ---------------------------------------- | ------- | ------ | ----------- |
-| Project  | `**/AGENTS.md`                           | ✓       | ✓      | ✓           |
-| Project  | `.github/instructions/*.instructions.md` | ✓       | ✗      | ✗           |
-| Project  | `**/CLAUDE.md`                           | ✗       | ✗      | ✓           |
+| Location | Injection | File                                     | Copilot | Cursor | Claude Code |
+| -------- | --------- | ---------------------------------------- | ------- | ------ | ----------- |
+| Project  | Global    | `AGENTS.md`                              | ✓       | ✓      | ✓           |
+| Project  | Scoped    | `**/AGENTS.md`                           | ✓       | ✓      | ✓           |
+| Project  | Global    | `.github/copilot-instructions.md`        | ✓       | ✗      | ✗           |
+| Project  | Scoped    | `.github/instructions/*.instructions.md` | ✓       | ✗      | ✗           |
+| Project  | Global    | `.cursor/rules/*.md`                     | ✗       | ✓      | ✗           |
+| Project  | Global    | `CLAUDE.md`                              | ✗       | ✗      | ✓           |
+| Project  | Scoped    | `**/CLAUDE.md`                           | ✗       | ✗      | ✓           |
+| User-dir | Global    | `~/.claude/CLAUDE.md`                    | ✗       | ✗      | ✓           |
 
 Docs:
 [AGENTS.md spec](https://agents.md) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code](https://code.claude.com/docs/en)
+[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
+[Cursor](https://cursor.com/docs/context/rules)
 
 ### Commands
 
