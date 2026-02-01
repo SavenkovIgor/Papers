@@ -39,7 +39,7 @@ prompt files, shared agent context, skills, and tool integrations.
 | -------- | --------------------------------- | ------- | ------ | ----------- |
 | Project  | `AGENTS.md`                       | ✓       | ✓      | ✓           |
 | Project  | `.github/copilot-instructions.md` | ✓       | ✗      | ✗           |
-| Project  | `.cursorrules`                    | ✗       | ✓      | ✗           |
+| Project  | `.cursor/rules/*.md`              | ✗       | ✓      | ✗           |
 | Project  | `CLAUDE.md`                       | ✗       | ✗      | ✓           |
 | User-dir | `~/.claude/CLAUDE.md`             | ✗       | ✗      | ✓           |
 
