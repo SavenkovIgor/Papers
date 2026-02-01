@@ -51,12 +51,13 @@ agent role expectations, and domain terminology.
 | Project  | `CLAUDE.md`                       | ✗       | ✗      | ✓           |
 | User-dir | `~/.claude/CLAUDE.md`             | ✗       | ✗      | ✓           |
 
-## Scoped Context
-
 Docs:
 [AGENTS.md spec](https://agents.md) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code](https://code.claude.com/docs/en)
+[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
+[Cursor](https://cursor.com/docs/context/rules)
+
+## Scoped Context
 
 Instruction files provide a set of rules and guidelines that can be applied to
 specific files, directories or filetypes. They usually consist of optional
@@ -82,12 +83,12 @@ Instructions can be scoped to specific parts of the project using different appr
 | Project  | `.github/instructions/*.instructions.md` | ✓       | ✗      | ✗           |
 | Project  | `**/CLAUDE.md`                           | ✗       | ✗      | ✓           |
 
-## Commands / Prompts
-
 Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
-[Cursor](https://cursor.com/docs/context/commands) |
+[AGENTS.md spec](https://agents.md) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en)
+
+## Commands / Prompts
 
 These files define **a reusable chat request** for recurring
 development tasks. Unlike instruction files, they do not describe behavioral
@@ -109,12 +110,12 @@ consist of optional YAML frontmatter and a free-form Markdown body.
 | User-dir | `~/.cursor/commands/*.md`     | ✗       | ✓      | ✗           |
 | User-dir | `~/.claude/commands/*.md`     | ✗       | ✗      | ✓           |
 
-## Skills
-
 Docs:
-[Skill spec](https://agentskills.io/home) |
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/prompt-files) |
+[Cursor](https://cursor.com/docs/context/commands) |
 [Claude Code](https://code.claude.com/docs/en)
+
+## Skills
 
 Skills are **conditionally loaded capability bundles** that provide specialized
 knowledge or procedures to an AI agent. Each skill is defined by a directory
@@ -149,10 +150,12 @@ context for the duration of the relevant request only.
 | Project  | `.github/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✗           |
 | Project  | `.claude/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✓           |
 
-## Custom Agents
-
 Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
+[Skill spec](https://agentskills.io/home) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
+[Claude Code](https://code.claude.com/docs/en)
+
+## Custom Agents
 
 Custom agents enable you to configure the AI to adopt different personas
 tailored to specific development roles and tasks. Each custom agent can have its
@@ -193,12 +196,10 @@ Can reference other files via Markdown links.
 | -------- | --------------------------------- | ------- | ------ | ----------- |
 | Project  | `.github/agents/*.agent.md`       | ✓       | ✗      | ✗           |
 
-## Ignored files
-
 Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
-[Cursor](https://cursor.com/docs/context/ignore-files) |
-[Claude Code](https://code.claude.com/docs/en)
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
+
+## Ignored files
 
 Ignore files define which parts of the workspace should be **excluded from AI context**.
 They use gitignore-style patterns to prevent sensitive data exposure and improve
@@ -225,13 +226,12 @@ Syntax is similar to `.gitignore` files.
 | `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗       | ✓      | ✗           |
 | `.claudeignore`         | Excludes from all AI features                   | ✗       | ✗      | ✓           |
 
-## MCP Servers
-
 Docs:
-[MCP spec](https://modelcontextprotocol.io) |
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
-[Cursor](https://cursor.com/docs/context/mcp) |
-[Claude Code](https://code.claude.com/docs/en/mcp)
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
+[Cursor](https://cursor.com/docs/context/ignore-files) |
+[Claude Code](https://code.claude.com/docs/en)
+
+## MCP Servers
 
 `mcp.json` configures **external tool integrations** via the Model Context
 Protocol (MCP). These tools allow AI agents to perform actions outside the
@@ -266,6 +266,12 @@ Optional development configuration may include:
 
 Configured tools are available to the agent **only in tool-enabled or agent
 execution modes**.
+
+Docs:
+[MCP spec](https://modelcontextprotocol.io) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
+[Cursor](https://cursor.com/docs/context/mcp) |
+[Claude Code](https://code.claude.com/docs/en/mcp)
 
 ## Feature-specific Instruction Hooks
 
