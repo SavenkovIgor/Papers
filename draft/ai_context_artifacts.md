@@ -24,12 +24,10 @@ prompt files, shared agent context, skills, and tool integrations.
 
 ## Project-wide Context
 
-Project-wide context files provide **persistent background context** that is
-automatically included in all AI interactions within a project. These files
-define shared knowledge that should be available across all sessions without
-requiring explicit attachment or invocation. Typical contents include
-high-level project descriptions, architectural overviews,
-agent role expectations, and domain terminology.
+**Persistent background context** automatically included in all AI interactions.
+
+- Applied to all sessions without explicit invocation
+- Contains project descriptions, architecture, agent roles, terminology
 
 **Context injection rules:**
 
@@ -53,11 +51,10 @@ Docs:
 
 ## Scoped Context
 
-Instruction files provide a set of rules and guidelines that can be applied to
-specific files, directories or filetypes. They usually consist of optional
-YAML frontmatter and a free-form Markdown body. Use them to apply consistent
-coding rules and guidelines only to specific parts of the project.
-They define behavioral constraints rather than concrete tasks or questions.
+**Context** targeted at specific files, directories, or filetypes.
+
+- Apply coding standards only to relevant parts of the project
+- Scoped via filesystem hierarchy or glob patterns in frontmatter
 
 **Context injection rules:**
 
@@ -84,10 +81,11 @@ Docs:
 
 ## Commands
 
-These files define **a reusable chat request** for recurring
-development tasks. Unlike instruction files, they do not describe behavioral
-constraints, but instead encode concrete tasks or questions. They usually
-consist of optional YAML frontmatter and a free-form Markdown body.
+**Reusable chat requests** for recurring development tasks.
+
+- Encode concrete tasks or questions, not behavioral rules
+- Must be explicitly invoked via slash commands or chat attachment
+- Never applied automatically
 
 **Context injection rules:**
 
@@ -111,10 +109,11 @@ Docs:
 
 ## Skills
 
-Skills are **conditionally loaded capability bundles** that provide specialized
-knowledge or procedures to an AI agent. Each skill is defined by a directory
-containing a mandatory `SKILL.md` file and optional supporting resources. Use
-them to add specialized capabilities that load only when needed for specific tasks.
+**Conditionally loaded capability bundles** providing specialized knowledge.
+
+- Load automatically when agent determines relevance to current task
+- Defined by `SKILL.md` + optional supporting files in a directory
+- Inject context only for duration of relevant request
 
 **File structure:**
 
@@ -151,12 +150,11 @@ Docs:
 
 ## Custom Agents
 
-Custom agents enable you to configure the AI to adopt different personas
-tailored to specific development roles and tasks. Each custom agent can have its
-own behavior, available tools, and specialized instructions. Unlike project-wide
-context files which provide passive background context, custom agents are active
-personas that users explicitly switch to. They usually consist of optional
-YAML frontmatter and a Markdown body.
+**Active personas** with specialized roles, tools, and instructions.
+
+- Explicitly selected by user. Not automatically active
+- Each agent defines behavior, available tools, model preferences
+- Can be invoked as subagents programmatically when `infer: true`
 
 **Context injection rules:**
 
@@ -195,21 +193,11 @@ Docs:
 
 ## Ignored files
 
-Ignore files define which parts of the workspace should be **excluded from AI context**.
-They use gitignore-style patterns to prevent sensitive data exposure and improve
-performance by reducing the indexed surface area.
+**Exclusion patterns** to protect sensitive data and reduce indexed surface.
 
-Files listed in ignore patterns are typically blocked from:
-
-- Semantic search and codebase indexing
-- Automatic context gathering
-- @ mention references
-- Code completion and inline edits
-
-**Note:** Terminal and MCP server tools may still access ignored files, as they
-operate outside the AI context system.
-
-Syntax is similar to `.gitignore` files.
+- Block files from indexing, search, @ mentions, completions
+- Use gitignore-style syntax
+- Terminal and MCP tools may still access ignored files
 
 **Placement:**
 
@@ -227,9 +215,10 @@ Docs:
 
 ## MCP Servers
 
-`mcp.json` configures **external tool integrations** via the Model Context
-Protocol (MCP). These tools allow AI agents to perform actions outside the
-language model itself.
+**External tool integrations** configured via Model Context Protocol
+
+- Allow AI agents to perform actions outside the language model
+- Configured in `mcp.json` with server connection details
 
 **Configuration model:**
 
@@ -269,14 +258,11 @@ Docs:
 
 ## Feature-specific Instruction Hooks
 
-Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+**Targeted settings** appending instructions to specific Copilot actions.
 
-Feature-specific instruction hooks are **targeted settings** that let you append
-instruction text (inline or via referenced markdown files) to Copilot's prompt
-for a *particular action*, rather than globally. They are configured via dedicated
-settings keys, inject instructions *verbatim* into the prompt for specific features,
-and act as lightweight, scoped policy layers.
+- Manually wired through settings keys, not file-based
+- Applied only at generation time for specific features (commits, reviews, PRs)
+- Inject instructions verbatim as lightweight policy layers
 
 **Execution model:**
 
@@ -304,6 +290,9 @@ Currently existing hooks include:
 Conceptually, these hooks predate but closely resemble modern
 instruction files: they are **action-scoped**, manually wired through settings,
 and applied only at generation time for the relevant Copilot feature.
+
+Docs:
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 ## Additional Sources
 
