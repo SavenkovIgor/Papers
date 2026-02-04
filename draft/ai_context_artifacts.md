@@ -132,10 +132,16 @@ context for the duration of the relevant request only.
 
 **Placement:**
 
-| Location | File                                    | Copilot | Cursor | Claude Code |
-| -------- | --------------------------------------- | ------- | ------ | ----------- |
-| Project  | `.github/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✗           |
-| Project  | `.claude/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✓           |
+| Location | File                                      | Copilot | Cursor | Claude Code |
+| -------- | ----------------------------------------- | ------- | ------ | ----------- |
+| Project  | `.github/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✗           |
+| Project  | `.agents/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✗           |
+| Project  | `.claude/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✓           |
+| User-dir | `~/.copilot/skills/<skill-name>/SKILL.md` | ✓       | ✗      | ✗           |
+| User-dir | `~/.agents/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✗           |
+| User-dir | `~/.claude/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✓           |
+
+VS Code supports custom skill locations via `chat.agentSkillsLocations` setting.
 
 Docs:
 [Skill spec](https://agentskills.io/home) |
@@ -208,6 +214,8 @@ Docs:
 | Location | File                              | Copilot | Cursor | Claude Code |
 | -------- | --------------------------------- | ------- | ------ | ----------- |
 | Project  | `.github/agents/*.agent.md`       | ✓       | ✗      | ✗           |
+
+VS Code supports custom agent file locations via `chat.agentFilesLocations` setting.
 
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
