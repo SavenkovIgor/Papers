@@ -42,7 +42,7 @@ Usually contains project description, coding standards and environment details
 **Context injection model:** AUTO / SCOPED
 (Context is auto-injected into specific parts of the project)
 
-- Could be applyd to specific dirs, files or filetypes.
+- Could be applied to specific dirs, files or filetypes.
 - Scoped via filesystem hierarchy or glob patterns in frontmatter
 
 - **Filesystem-based scoping:** Place context files (`AGENTS.md`, `CLAUDE.md`) in subdirectories
@@ -55,8 +55,8 @@ Usually contains project description, coding standards and environment details
 
 | Location | Injection | File                                     | Copilot | Cursor | Claude Code |
 | -------- | --------- | ---------------------------------------- | ------- | ------ | ----------- |
-| Project  | Global    | `AGENTS.md`                              | ✓       | ✓      | ✓           |
-| Project  | Scoped    | `**/AGENTS.md`                           | ✓       | ✓      | ✓           |
+| Project  | Global    | `AGENTS.md`                              | ✓       | ✓      | ✗           |
+| Project  | Scoped    | `**/AGENTS.md`                           | ✓       | ✓      | ✗           |
 | Project  | Global    | `.github/copilot-instructions.md`        | ✓       | ✗      | ✗           |
 | Project  | Scoped    | `.github/instructions/*.instructions.md` | ✓       | ✗      | ✗           |
 | Project  | Global    | `.cursor/rules/*.md`                     | ✗       | ✓      | ✗           |
@@ -67,7 +67,7 @@ Usually contains project description, coding standards and environment details
 Docs:
 [AGENTS.md spec](https://agents.md) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-[Claude Code](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules) |
+[Claude Code](https://code.claude.com/docs/en/memory#organize-rules-with-claude/rules/) |
 [Cursor](https://cursor.com/docs/context/rules)
 
 ### Commands
@@ -137,9 +137,11 @@ context for the duration of the relevant request only.
 | Project  | `.github/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✗           |
 | Project  | `.agents/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✗           |
 | Project  | `.claude/skills/<skill-name>/SKILL.md`    | ✓       | ✗      | ✓           |
+| Project  | `.cursor/skills/<skill-name>/SKILL.md`    | ✗       | ✓      | ✗           |
 | User-dir | `~/.copilot/skills/<skill-name>/SKILL.md` | ✓       | ✗      | ✗           |
 | User-dir | `~/.agents/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✗           |
 | User-dir | `~/.claude/skills/<skill-name>/SKILL.md`  | ✓       | ✗      | ✓           |
+| User-dir | `~/.cursor/skills/<skill-name>/SKILL.md`  | ✗       | ✓      | ✗           |
 
 VS Code supports custom skill locations via `chat.agentSkillsLocations` setting.
 
