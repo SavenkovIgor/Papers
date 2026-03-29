@@ -150,6 +150,34 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
 [Claude Code](https://code.claude.com/docs/en)
 
+### Tools
+
+**Built-in capabilities** the agent can invoke natively, without any configuration files.
+
+- Available automatically in agent/agentic mode — no MCP setup required
+- Each tool has a defined input schema; the model decides when and how to invoke them
+- Set is fixed per platform; extend via MCP Servers (see below)
+
+**Capability coverage:**
+
+| Tool category               | Copilot | Cursor | Claude Code |
+| --------------------------- | ------- | ------ | ----------- |
+| Read / write / edit files   | ✓       | ✓      | ✓           |
+| Run terminal commands       | ✓       | ✓      | ✓           |
+| Workspace / codebase search | ✓       | ✓      | ✓           |
+| Web search                  | ✓       | ✓      | ✓           |
+| Web fetch (URL content)     | ✓       | ✗      | ✓           |
+| Browser control             | ✓ *     | ✓      | ✗           |
+
+\* Copilot browser tools are experimental and may change in future releases.
+
+Docs:
+[VS Code](https://code.visualstudio.com/docs/copilot/agents/agent-tools) |
+[Cursor: terminal](https://cursor.com/docs/agent/tools/terminal) |
+[Cursor: search](https://cursor.com/docs/agent/tools/search) |
+[Cursor: browser](https://cursor.com/docs/agent/tools/browser) |
+[Claude Code](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+
 ### MCP Servers
 
 **External tool integrations** configured via Model Context Protocol
