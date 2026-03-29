@@ -171,8 +171,8 @@ Docs:
 \* Copilot URL fetch is available via experimental browser control; not stable across all IDE hosts.
 
 Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/chat-tools) |
-[Cursor](https://cursor.com/docs/chat/agent) |
+[VS Code](https://code.visualstudio.com/docs/copilot/agents/agent-tools) |
+[Cursor](https://docs.cursor.com/agent/tools) |
 [Claude Code](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
 
 ### MCP Servers
