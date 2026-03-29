@@ -165,10 +165,11 @@ Docs:
 | Read / write / edit files   | ✓       | ✓      | ✓           |
 | Run terminal commands       | ✓       | ✓      | ✓           |
 | Workspace / codebase search | ✓       | ✓      | ✓           |
-| Web fetch (URL content)     | ✓ *     | ✗      | ✓           |
-| Web search                  | ✗       | ✓      | ✓           |
+| Web search                  | ✓       | ✓      | ✓           |
+| Web fetch (URL content)     | ✓       | ✗      | ✓           |
+| Browser control             | ✓ *     | ✓      | ✗           |
 
-\* Copilot URL fetch is available via experimental browser control; not stable across all IDE hosts.
+\* Copilot browser tools are experimental and may change in future releases.
 
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/agents/agent-tools) |
