@@ -1,0 +1,27 @@
+title: AI Context Artifacts
+description: >-
+  A technical reference comparing how GitHub Copilot, Cursor, and Claude Code
+  handle AI context configuration — instructions, commands, skills, MCP servers,
+  and custom agents.
+baseurl: "/Papers"
+url: "https://savenkvigor.github.io"
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    block:
+      line_numbers: false
+
+plugins:
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - "*.gemspec"
