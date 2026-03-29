@@ -172,7 +172,9 @@ Docs:
 
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/agents/agent-tools) |
-[Cursor](https://docs.cursor.com/agent/tools) |
+[Cursor: terminal](https://cursor.com/docs/agent/tools/terminal) |
+[Cursor: search](https://cursor.com/docs/agent/tools/search) |
+[Cursor: browser](https://cursor.com/docs/agent/tools/browser) |
 [Claude Code](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
 
 ### MCP Servers
