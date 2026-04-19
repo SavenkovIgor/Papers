@@ -250,6 +250,30 @@ VS Code supports custom agent file locations via `chat.agentFilesLocations` sett
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
+### Plugins
+
+**Distributable bundles** packaging skills, agents, hooks, and MCP servers for sharing across projects and teams.
+
+- Standalone directories installed from marketplaces or loaded via `--plugin-dir`
+- Skills from a plugin are namespaced to prevent conflicts: `/plugin-name:skill-name`
+- Complement per-project `.claude/` configuration: use plugins when sharing across projects or with the community
+
+**Structure (Claude Code):**
+
+| Path (relative to plugin root)   | Purpose                                              |
+| -------------------------------- | ---------------------------------------------------- |
+| `.claude-plugin/plugin.json`     | Manifest: `name`, `description`, `version`, `author` |
+| `skills/<name>/SKILL.md`         | Skills (invoked as `/plugin-name:skill-name`)        |
+| `agents/`                        | Custom agent definitions                             |
+| `hooks/hooks.json`               | Event handlers                                       |
+| `.mcp.json`                      | MCP server configurations                            |
+| `settings.json`                  | Default settings applied when plugin is enabled      |
+
+Docs:
+[Claude Code](https://code.claude.com/docs/en/plugins#create-plugins) |
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) |
+[Cursor](https://cursor.com/ru/docs/plugins)
+
 ## Ignored files
 
 **Exclusion patterns** to protect sensitive data and reduce indexed surface.
