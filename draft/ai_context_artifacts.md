@@ -217,6 +217,7 @@ execution modes**.
 
 Docs:
 [MCP spec](https://modelcontextprotocol.io) |
+[MCP getting started](https://modelcontextprotocol.io/docs/getting-started/intro) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) |
 [Cursor](https://cursor.com/docs/context/mcp) |
 [Claude Code](https://code.claude.com/docs/en/mcp)
