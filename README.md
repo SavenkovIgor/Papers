@@ -2,7 +2,7 @@
 goal: Find common ground across tools by treating AI Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
 ---
 
-# AI Artifacts (In)compatibility
+# AI Artifacts (In)Compatibility
 
 AI Artifacts are file-based inputs that define what an AI knows,
 how it behaves, and what it is allowed to do in a project.
