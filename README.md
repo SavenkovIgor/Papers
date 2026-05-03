@@ -1,10 +1,10 @@
 ---
-goal: Find common ground across tools by treating AI Context Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
+goal: Find common ground across tools by treating AI Artifacts as the primary entities and IDE implementations as secondary. Also it is important to not be too verbose - it is an overview, not a documentation. For documentation links are provided.
 ---
 
-# AI Context Artifacts
+# AI Artifacts (In)compatibility
 
-AI Context Artifacts are file-based inputs that define what an AI knows,
+AI Artifacts are file-based inputs that define what an AI knows,
 how it behaves, and what it is allowed to do in a project.
 They are the primary entities; IDE or tool support is just one way to
 discover and apply them.
@@ -14,12 +14,13 @@ available as an extension in multiple IDEs including Visual Studio Code, JetBrai
 IDEs, and others. The implementation details described here apply to Copilot
 across all supported IDEs.
 
-Artifacts fall into two categories:
+Most modern tools converge on a similar set of artifacts.
 
-- **Knowledge Artifacts** define what the AI knows: project context, instructions, and prompts
-- **Capability Artifacts** define what the AI can do: skills, agents, and external tools
+## Glossary
 
-Most modern tools converge on a similar set of artifacts across both categories.
+- `Knowledge Artifacts` - define what the AI knows: project context, instructions, and prompts
+- `Capability Artifacts` - define what the AI can do: skills, agents, and external tools
+- `Harness & Distribution Artifacts` - package and harness capabilities for AI
 
 ## Knowledge Artifacts
 
@@ -250,6 +251,8 @@ VS Code supports custom agent file locations via `chat.agentFilesLocations` sett
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
+## Harness & Distribution Artifacts
+
 ### Plugins
 
 **Distributable bundles** packaging skills, agents, hooks, and MCP servers for sharing across projects and teams.
@@ -274,7 +277,7 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) |
 [Cursor](https://cursor.com/docs/plugins)
 
-## Feature-specific Instruction Hooks
+### Feature-specific Instruction Hooks
 
 **Targeted settings** appending instructions to specific Copilot actions.
 
