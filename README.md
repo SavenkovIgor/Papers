@@ -274,28 +274,6 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) |
 [Cursor](https://cursor.com/docs/plugins)
 
-## Ignored files
-
-**Exclusion patterns** to protect sensitive data and reduce indexed surface.
-
-- Block files from indexing, search, @ mentions, completions
-- Use gitignore-style syntax
-- Terminal and MCP tools may still access ignored files
-
-**Placement:**
-
-| File                    | Scope                                           | Copilot | Cursor | Claude Code |
-| ----------------------- | ------------------------------------------------| ------- | ------ | ----------- |
-| `.gitignore`            | Excludes from indexing (honored by default)     | ✓       | ✓      | ✓           |
-| `.cursorignore`         | Excludes from all AI features                   | ✗       | ✓      | ✗           |
-| `.cursorindexingignore` | Excludes only from indexing, remains accessible | ✗       | ✓      | ✗           |
-| `.claudeignore`         | Excludes from all AI features                   | ✗       | ✗      | ✓           |
-
-Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/ignoring-files) |
-[Cursor](https://cursor.com/docs/context/ignore-files) |
-[Claude Code](https://code.claude.com/docs/en)
-
 ## Feature-specific Instruction Hooks
 
 **Targeted settings** appending instructions to specific Copilot actions.
