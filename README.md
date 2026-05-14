@@ -20,7 +20,7 @@ Most modern tools converge on a similar set of artifacts.
 
 - `Knowledge Artifacts` - define what the AI knows: project context, instructions, and prompts
 - `Capability Artifacts` - define what the AI can do: skills, agents, and external tools
-- `Harness & Distribution Artifacts` - package and harness capabilities for AI
+- `Distribution Artifacts` - package and distribute capabilities across projects and teams
 
 ## Knowledge Artifacts
 
@@ -70,6 +70,31 @@ Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 [Claude Code](https://code.claude.com/docs/en/memory#organize-rules-with-claude/rules/) |
 [Cursor](https://cursor.com/docs/context/rules)
+
+#### Action-scoped Instructions
+
+**Targeted settings** that append instructions to specific Copilot actions.
+
+- Manually wired through settings keys, not file-based
+- Applied only at generation time for the relevant feature (commits, reviews, PRs)
+- Instructions are injected *verbatim* into the prompt
+
+**Context injection model:** SETTINGS-BASED / ACTION-SCOPED
+
+**Available settings:**
+
+- Commit message generation
+  (`github.copilot.chat.commitMessageGeneration.instructions`) – commonly used
+  to enforce commit formats, tone, and length (e.g. Conventional Commits).
+- Review-on-selection
+  (`github.copilot.chat.reviewSelection.instructions`) – used to define review
+  rubrics, focus areas, exclusions, and output structure for quick code reviews.
+- Pull request title and description generation
+  (`github.copilot.chat.pullRequestDescriptionGeneration.instructions`) –
+  typically aligned with PR templates, required sections, and stylistic rules.
+
+Docs:
+[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 ### Commands
 
@@ -251,7 +276,7 @@ VS Code supports custom agent file locations via `chat.agentFilesLocations` sett
 Docs:
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 
-## Harness & Distribution Artifacts
+## Distribution Artifacts
 
 ### Plugins
 
@@ -276,44 +301,6 @@ Docs:
 [Claude Code](https://code.claude.com/docs/en/plugins#create-plugins) |
 [VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) |
 [Cursor](https://cursor.com/docs/plugins)
-
-### Feature-specific Instruction Hooks
-
-**Targeted settings** appending instructions to specific Copilot actions.
-
-- Manually wired through settings keys, not file-based
-- Applied only at generation time for specific features (commits, reviews, PRs)
-- Inject instructions verbatim as lightweight policy layers
-
-**Execution model:**
-
-- Hooks are **action-scoped** and applied only at generation time for the relevant
-  Copilot feature.
-- Instructions are injected *verbatim* into the prompt for specific actions.
-- Unlike project-wide context files, hooks are manually wired through settings.
-
-**Available hooks:**
-
-Currently existing hooks include:
-
-- Commit message generation
-  (`github.copilot.chat.commitMessageGeneration.instructions`) – commonly used
-  to enforce commit formats, tone, and length (e.g. Conventional Commits).
-- Review-on-selection
-  (`github.copilot.chat.reviewSelection.instructions`) – used to define review
-  rubrics, focus areas, exclusions, and output structure for quick code reviews.
-- Pull request title and description generation
-  (`github.copilot.chat.pullRequestDescriptionGeneration.instructions`) –
-  typically aligned with PR templates, required sections, and stylistic rules.
-
-**Design philosophy:**
-
-Conceptually, these hooks predate but closely resemble modern
-instruction files: they are **action-scoped**, manually wired through settings,
-and applied only at generation time for the relevant Copilot feature.
-
-Docs:
-[VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 ## Additional Sources
 
